@@ -25,6 +25,8 @@ node_modules/
 # Build output
 dist/
 dist-ssr/
+# docs/ is used for GitHub Pages
+
 # Vite temporary files
 vite/
 # Environment files
