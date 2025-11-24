@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { diffChars, diffWords, diffLines } from 'diff';
+import { Button } from '../components/ui/Button';
+import { Textarea } from '../components/ui/Textarea';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function TextCompare() {
   const [text1, setText1] = useState('');
@@ -23,35 +26,35 @@ export default function TextCompare() {
     >
       <div className="grid gap-6">
         <div className="flex justify-center mb-4">
-          <div className="flex gap-2 p-1 bg-slate-900/50 border border-white/10 rounded-base">
+          <div className="flex gap-2 p-1 bg-muted rounded-lg">
             {['chars', 'words', 'lines'].map((m) => (
-              <button
+              <Button
                 key={m}
+                variant={mode === m ? 'default' : 'ghost'}
+                size="sm"
                 onClick={() => setMode(m)}
-                className={`px-4 py-2 rounded-sm font-bold capitalize transition-colors ${
-                  mode === m ? 'bg-accent text-white' : 'hover:bg-white/5 text-textSecondary hover:text-text'
-                }`}
+                className="capitalize font-bold"
               >
                 {m}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Original Text</label>
-            <textarea
-              className="w-full h-48 font-mono text-sm resize-none"
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Original Text</label>
+            <Textarea
+              className="h-48 resize-none font-mono text-sm"
               value={text1}
               onChange={(e) => setText1(e.target.value)}
               placeholder="Paste original text..."
             />
           </div>
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Changed Text</label>
-            <textarea
-              className="w-full h-48 font-mono text-sm resize-none"
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Changed Text</label>
+            <Textarea
+              className="h-48 resize-none font-mono text-sm"
               value={text2}
               onChange={(e) => setText2(e.target.value)}
               placeholder="Paste changed text..."
@@ -60,27 +63,26 @@ export default function TextCompare() {
         </div>
 
         <div className="flex justify-center">
-          <button
-            onClick={compareText}
-            className="bg-accent hover:bg-accentHover text-white px-8 py-3 rounded-base transition-colors font-bold"
-          >
+          <Button onClick={compareText} size="lg" className="px-8">
             Compare Text
-          </button>
+          </Button>
         </div>
 
         {diffResult.length > 0 && (
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Comparison Result</label>
-            <div className="p-4 bg-slate-900/50 border border-white/10 rounded-base font-mono text-sm whitespace-pre-wrap break-words text-text">
-              {diffResult.map((part, index) => {
-                const color = part.added ? 'bg-green-500/20 text-green-200' : part.removed ? 'bg-red-500/20 text-red-200' : 'bg-transparent';
-                return (
-                  <span key={index} className={color}>
-                    {part.value}
-                  </span>
-                );
-              })}
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Comparison Result</label>
+            <Card className="bg-muted/50">
+              <CardContent className="p-4 font-mono text-sm whitespace-pre-wrap break-words">
+                {diffResult.map((part, index) => {
+                  const color = part.added ? 'bg-green-500/20 text-green-600 dark:text-green-400' : part.removed ? 'bg-red-500/20 text-red-600 dark:text-red-400' : 'bg-transparent';
+                  return (
+                    <span key={index} className={color}>
+                      {part.value}
+                    </span>
+                  );
+                })}
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>

@@ -40,14 +40,7 @@ export const tools = [
     icon: FileCode,
     category: 'Formatters'
   },
-  {
-    id: 'json-to-model',
-    name: 'JSON to Model',
-    description: 'Generate model classes from JSON',
-    path: '/json-to-model',
-    icon: FileDigit,
-    category: 'Converters'
-  },
+
   {
     id: 'qr-generator',
     name: 'QR Code Generator',

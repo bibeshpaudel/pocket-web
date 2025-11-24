@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
+import { Input } from '../components/ui/Input';
+import { Textarea } from '../components/ui/Textarea';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function RegexTester() {
   const [regex, setRegex] = useState('');
@@ -57,19 +60,19 @@ export default function RegexTester() {
     >
       <div className="grid gap-6">
         <div className="grid md:grid-cols-[1fr_auto] gap-4">
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Regular Expression</label>
-            <input
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Regular Expression</label>
+            <Input
               type="text"
-              className="w-full font-mono"
+              className="font-mono"
               value={regex}
               onChange={(e) => setRegex(e.target.value)}
               placeholder="e.g. [a-z]+"
             />
           </div>
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Flags</label>
-            <input
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Flags</label>
+            <Input
               type="text"
               className="w-24 font-mono"
               value={flags}
@@ -80,36 +83,38 @@ export default function RegexTester() {
         </div>
 
         {error && (
-          <div className="p-3 bg-red-500/20 text-red-200 border border-red-500/50 rounded-base text-sm font-bold">
+          <div className="p-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-md text-sm font-medium">
             Error: {error}
           </div>
         )}
 
-        <div>
-          <label className="block font-bold mb-2 text-textSecondary">Test String</label>
-          <textarea
-            className="w-full h-32 p-4 bg-slate-900/50 border border-white/10 rounded-base font-mono text-sm focus:outline-none focus:border-accent transition-colors resize-y text-text"
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Test String</label>
+          <Textarea
+            className="h-32 resize-y font-mono"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Paste text to test against..."
           />
         </div>
 
-        <div>
-          <label className="block font-bold mb-2 text-textSecondary">Matches ({matches.length})</label>
-          <div className="h-48 overflow-auto p-4 bg-slate-900/50 border border-white/10 rounded-base font-mono text-sm text-text">
-            {matches.length > 0 ? (
-              <ul className="space-y-2">
-                {matches.map((m, i) => (
-                  <li key={i} className="p-2 bg-slate-800/50 rounded border border-white/5">
-                    <span className="font-bold text-accent">Match {i + 1}:</span> "{m.match}" <span className="opacity-50 text-xs text-textSecondary">(Index: {m.index})</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="opacity-50 italic text-textSecondary">No matches found</p>
-            )}
-          </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Matches ({matches.length})</label>
+          <Card className="h-48 overflow-auto bg-muted/50">
+            <CardContent className="p-4 font-mono text-sm">
+              {matches.length > 0 ? (
+                <ul className="space-y-2">
+                  {matches.map((m, i) => (
+                    <li key={i} className="p-2 bg-background rounded border border-border">
+                      <span className="font-bold text-primary">Match {i + 1}:</span> "{m.match}" <span className="opacity-50 text-xs text-muted-foreground">(Index: {m.index})</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="opacity-50 italic text-muted-foreground">No matches found</p>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </ToolLayout>

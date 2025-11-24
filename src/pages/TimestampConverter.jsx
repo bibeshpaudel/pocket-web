@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { Copy, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function TimestampConverter() {
   const [timestamp, setTimestamp] = useState(Math.floor(Date.now() / 1000));
@@ -60,64 +63,73 @@ export default function TimestampConverter() {
       description="Convert between Unix timestamps and human-readable dates."
     >
       <div className="grid gap-8">
-        <div className="p-6 bg-accent/10 border border-accent/50 rounded-base text-center">
-          <p className="font-bold mb-2 text-accent">Current Unix Timestamp</p>
-          <div className="text-4xl font-mono font-bold text-text">{Math.floor(Date.now() / 1000)}</div>
-        </div>
+        <Card className="bg-primary/10 border-primary/20">
+          <CardContent className="flex flex-col items-center justify-center p-6 text-center">
+            <p className="font-bold mb-2 text-primary">Current Unix Timestamp</p>
+            <div className="text-4xl font-mono font-bold">{Math.floor(Date.now() / 1000)}</div>
+          </CardContent>
+        </Card>
 
         <div className="grid gap-6">
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Unix Timestamp (Seconds)</label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Unix Timestamp (Seconds)</label>
             <div className="flex gap-2">
-              <input
+              <Input
                 type="number"
                 value={timestamp}
                 onChange={handleTimestampChange}
                 className="flex-grow font-mono text-lg"
               />
-              <button
-                onClick={setCurrentTime}
-                className="bg-accent hover:bg-accentHover text-white px-4 rounded-base font-bold transition-colors"
-              >
+              <Button onClick={setCurrentTime}>
                 Now
-              </button>
+              </Button>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block font-bold text-textSecondary">Human Readable (Local)</label>
-                <button onClick={() => copyToClipboard(dateString, 'date')} className="text-xs flex items-center gap-1 hover:text-accent transition-colors">
-                  {copiedDate ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-medium leading-none">Human Readable (Local)</label>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => copyToClipboard(dateString, 'date')}
+                  className="h-6 px-2 text-xs"
+                >
+                  {copiedDate ? <Check className="mr-1 h-3 w-3" /> : <Copy className="mr-1 h-3 w-3" />}
                   {copiedDate ? 'Copied!' : 'Copy'}
-                </button>
+                </Button>
               </div>
-              <div className="p-3 bg-slate-900/50 border border-white/10 rounded-base font-mono text-text">
+              <div className="p-3 bg-muted rounded-md border border-input font-mono text-sm">
                 {dateString}
               </div>
             </div>
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block font-bold text-textSecondary">ISO 8601 (UTC)</label>
-                <button onClick={() => copyToClipboard(isoString, 'iso')} className="text-xs flex items-center gap-1 hover:text-accent transition-colors">
-                  {copiedIso ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-medium leading-none">ISO 8601 (UTC)</label>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => copyToClipboard(isoString, 'iso')}
+                  className="h-6 px-2 text-xs"
+                >
+                  {copiedIso ? <Check className="mr-1 h-3 w-3" /> : <Copy className="mr-1 h-3 w-3" />}
                   {copiedIso ? 'Copied!' : 'Copy'}
-                </button>
+                </Button>
               </div>
-              <div className="p-3 bg-slate-900/50 border border-white/10 rounded-base font-mono text-text">
+              <div className="p-3 bg-muted rounded-md border border-input font-mono text-sm">
                 {isoString}
               </div>
             </div>
           </div>
 
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Date Picker</label>
-            <input
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Date Picker</label>
+            <Input
               type="datetime-local"
               onChange={handleDateChange}
               onClick={(e) => e.target.showPicker()}
-              className="w-full font-mono dark:[color-scheme:dark] cursor-pointer"
+              className="w-full font-mono cursor-pointer"
             />
           </div>
         </div>

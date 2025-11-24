@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { Search, Globe, MapPin, Network, Trash2, Activity } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function IpLookup() {
   const [ip, setIp] = useState('');
@@ -46,13 +49,15 @@ export default function IpLookup() {
   };
 
   const InfoCard = ({ title, value, icon: Icon }) => (
-    <div className="p-4 bg-slate-900/50 border border-white/10 rounded-base hover:bg-slate-800/50 transition-colors group">
-      <div className="flex items-center gap-2 mb-2 text-textSecondary group-hover:text-accent transition-colors">
-        <Icon className="w-4 h-4" />
-        <span className="text-sm font-bold">{title}</span>
-      </div>
-      <div className="font-mono font-bold break-all text-text">{value || 'N/A'}</div>
-    </div>
+    <Card className="hover:bg-muted/50 transition-colors group">
+      <CardContent className="p-4">
+        <div className="flex items-center gap-2 mb-2 text-muted-foreground group-hover:text-primary transition-colors">
+          <Icon className="w-4 h-4" />
+          <span className="text-sm font-medium">{title}</span>
+        </div>
+        <div className="font-mono font-bold break-all">{value || 'N/A'}</div>
+      </CardContent>
+    </Card>
   );
 
   return (
@@ -62,62 +67,76 @@ export default function IpLookup() {
     >
       <div className="grid gap-8">
         {myIp && (
-          <div className="p-6 bg-accent/10 border border-accent/30 rounded-base relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <Activity className="w-24 h-24 text-accent" />
+          <Card className="bg-primary/5 border-primary/20 overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+              <Activity className="w-24 h-24 text-primary" />
             </div>
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-accent">
-              <Activity className="w-5 h-5" /> Your Information
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
-              <InfoCard title="IP Address" value={myIp.ip} icon={Network} />
-              <InfoCard title="Location" value={`${myIp.city}, ${myIp.country}`} icon={MapPin} />
-              <InfoCard title="ISP" value={myIp.connection?.isp || myIp.connection?.org} icon={Globe} />
-              <InfoCard title="Timezone" value={myIp.timezone?.id} icon={Globe} />
-            </div>
-          </div>
+            <CardContent className="p-6 relative z-10">
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-primary">
+                <Activity className="w-5 h-5" /> Your Information
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="space-y-1">
+                  <div className="text-xs font-medium text-muted-foreground">IP Address</div>
+                  <div className="font-mono font-bold">{myIp.ip}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium text-muted-foreground">Location</div>
+                  <div className="font-bold">{`${myIp.city}, ${myIp.country}`}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium text-muted-foreground">ISP</div>
+                  <div className="font-bold">{myIp.connection?.isp || myIp.connection?.org}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium text-muted-foreground">Timezone</div>
+                  <div className="font-bold">{myIp.timezone?.id}</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
-        <div>
-          <label className="block font-bold mb-2 text-textSecondary">Lookup IP or Domain</label>
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Lookup IP or Domain</label>
           <div className="flex gap-4">
             <div className="relative flex-grow">
-              <input
+              <Input
                 type="text"
-                className="w-full p-3 pl-10 bg-slate-900/50 border border-white/10 rounded-base font-mono focus:outline-none focus:border-accent transition-colors text-text"
+                className="pl-10 font-mono"
                 value={ip}
                 onChange={(e) => setIp(e.target.value)}
                 placeholder="e.g. 8.8.8.8 or google.com"
                 onKeyDown={(e) => e.key === 'Enter' && lookupIp()}
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textSecondary" />
             </div>
-            <button
+            <Button
               onClick={lookupIp}
               disabled={loading}
-              className="bg-accent hover:bg-accentHover text-white px-6 border border-white/10 rounded-base transition-colors font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px] justify-center"
+              className="min-w-[100px]"
             >
               {loading ? 'Searching...' : 'Lookup'}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="destructive"
+              size="icon"
               onClick={() => { setIp(''); setData(null); setError(''); }}
-              className="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-4 border border-red-500/50 rounded-base transition-colors font-bold flex items-center justify-center"
               title="Clear"
             >
-              <Trash2 className="w-5 h-5" />
-            </button>
+              <Trash2 className="w-4 h-4" />
+            </Button>
           </div>
         </div>
 
         {error && (
-          <div className="p-4 bg-red-500/20 text-red-200 border border-red-500/50 rounded-base font-bold">
+          <div className="p-4 bg-destructive/10 text-destructive border border-destructive/20 rounded-md font-medium">
             Error: {error}
           </div>
         )}
 
         {data && (
           <div className="grid gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h3 className="font-bold text-lg text-textSecondary">Results for <span className="text-text">{ip}</span></h3>
+            <h3 className="font-bold text-lg text-muted-foreground">Results for <span className="text-foreground">{ip}</span></h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <InfoCard title="IP Address" value={data.ip} icon={Network} />
               <InfoCard title="Network" value={data.connection?.isp || data.connection?.org} icon={Network} />

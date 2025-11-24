@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { Copy, RefreshCw, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function PasswordGenerator() {
   const [password, setPassword] = useState('');
@@ -57,59 +60,63 @@ export default function PasswordGenerator() {
       description="Generate strong, secure passwords locally."
     >
       <div className="max-w-2xl mx-auto space-y-8">
-        <div className="relative">
-          <input
+        <div className="relative group">
+          <Input
             type="text"
             readOnly
             value={password}
-            className="w-full p-6 text-2xl md:text-3xl font-mono text-center bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base focus:outline-none"
+            className="h-20 text-2xl md:text-3xl font-mono text-center pr-14"
           />
-          <button
+          <Button
+            size="icon"
+            variant="ghost"
             onClick={copyToClipboard}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-main/20 rounded-base transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-muted"
             title="Copy"
           >
-            {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6" />}
-          </button>
+            {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
+          </Button>
         </div>
 
-        <div className="space-y-6">
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="font-bold">Password Length</label>
-              <span className="font-mono bg-main px-2 rounded-base border-2 border-border dark:border-darkBorder text-sm font-bold">{length}</span>
+        <Card>
+          <CardContent className="space-y-6 pt-6">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-medium leading-none">Password Length</label>
+                <span className="font-mono bg-muted px-2 py-1 rounded text-sm font-bold">{length}</span>
+              </div>
+              <input
+                type="range"
+                min="8"
+                max="64"
+                value={length}
+                onChange={(e) => setLength(Number(e.target.value))}
+                className="w-full accent-primary h-2 bg-muted rounded-lg appearance-none cursor-pointer"
+              />
             </div>
-            <input
-              type="range"
-              min="8"
-              max="64"
-              value={length}
-              onChange={(e) => setLength(Number(e.target.value))}
-              className="w-full accent-main h-2 bg-bg dark:bg-darkBg rounded-lg appearance-none cursor-pointer border-2 border-border dark:border-darkBorder"
-            />
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {Object.keys(options).map((key) => (
-              <label key={key} className="flex items-center gap-3 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base cursor-pointer hover:bg-main/10 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={options[key]}
-                  onChange={(e) => setOptions({ ...options, [key]: e.target.checked })}
-                  className="w-5 h-5 accent-main border-2 border-border rounded focus:ring-0"
-                />
-                <span className="capitalize font-bold">{key}</span>
-              </label>
-            ))}
-          </div>
+            <div className="grid grid-cols-2 gap-4">
+              {Object.keys(options).map((key) => (
+                <label key={key} className="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={options[key]}
+                    onChange={(e) => setOptions({ ...options, [key]: e.target.checked })}
+                    className="w-4 h-4 accent-primary rounded focus:ring-primary"
+                  />
+                  <span className="capitalize text-sm font-medium">{key}</span>
+                </label>
+              ))}
+            </div>
 
-          <button
-            onClick={generatePassword}
-            className="w-full flex items-center justify-center gap-2 bg-main text-text p-4 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold text-lg"
-          >
-            <RefreshCw className="w-6 h-6" /> Generate New Password
-          </button>
-        </div>
+            <Button
+              onClick={generatePassword}
+              className="w-full h-12 text-lg"
+            >
+              <RefreshCw className="mr-2 h-5 w-5" /> Generate New Password
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </ToolLayout>
   );

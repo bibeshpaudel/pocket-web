@@ -8,6 +8,8 @@ import xml from 'react-syntax-highlighter/dist/esm/languages/hljs/xml';
 import csharp from 'react-syntax-highlighter/dist/esm/languages/hljs/csharp';
 import java from 'react-syntax-highlighter/dist/esm/languages/hljs/java';
 import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/dracula';
+import { Textarea } from '../components/ui/Textarea';
+import { Card, CardContent } from '../components/ui/Card';
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 SyntaxHighlighter.registerLanguage('python', python);
@@ -30,7 +32,7 @@ export default function SyntaxHighlighterTool() {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="font-bold"
+            className="flex h-10 w-[200px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-medium"
           >
             <option value="javascript">JavaScript</option>
             <option value="python">Python</option>
@@ -42,27 +44,30 @@ export default function SyntaxHighlighterTool() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Code Input</label>
-            <textarea
-              className="w-full h-96 font-mono text-sm resize-none"
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Code Input</label>
+            <Textarea
+              className="h-96 resize-none font-mono text-sm"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Paste your code here..."
             />
           </div>
-          <div>
-            <label className="block font-bold mb-2 text-textSecondary">Highlighted Output</label>
-            <div className="h-96 overflow-auto border border-white/10 rounded-base bg-slate-900/50">
-              <SyntaxHighlighter
-                language={language}
-                style={dracula}
-                customStyle={{ margin: 0, height: '100%', background: 'transparent' }}
-                showLineNumbers={true}
-              >
-                {code || '// Code preview will appear here'}
-              </SyntaxHighlighter>
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none">Highlighted Output</label>
+            <Card className="h-96 overflow-hidden bg-[#282a36]">
+              <CardContent className="h-full p-0 overflow-auto">
+                <SyntaxHighlighter
+                  language={language}
+                  style={dracula}
+                  customStyle={{ margin: 0, minHeight: '100%', padding: '1.5rem', background: 'transparent' }}
+                  showLineNumbers={true}
+                  wrapLines={true}
+                >
+                  {code || '// Code preview will appear here'}
+                </SyntaxHighlighter>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

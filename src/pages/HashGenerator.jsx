@@ -2,6 +2,9 @@ import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import CryptoJS from 'crypto-js';
 import { Copy, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Textarea } from '../components/ui/Textarea';
 
 export default function HashGenerator() {
   const [input, setInput] = useState('');
@@ -41,10 +44,10 @@ export default function HashGenerator() {
       description="Generate MD5, SHA-1, SHA-256, and SHA-512 hashes."
     >
       <div className="grid gap-6">
-        <div>
-          <label className="block font-bold mb-2">Input Text</label>
-          <textarea
-            className="w-full h-32 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none focus:shadow-light dark:focus:shadow-dark transition-shadow resize-y"
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Input Text</label>
+          <Textarea
+            className="h-32 resize-y"
             value={input}
             onChange={(e) => generateHashes(e.target.value)}
             placeholder="Type text to hash..."
@@ -53,22 +56,23 @@ export default function HashGenerator() {
 
         <div className="space-y-4">
           {Object.entries(hashes).map(([algo, hash]) => (
-            <div key={algo}>
-              <label className="block font-bold mb-1 uppercase">{algo}</label>
+            <div key={algo} className="space-y-1.5">
+              <label className="text-sm font-medium leading-none uppercase">{algo}</label>
               <div className="flex items-center gap-2">
-                <input
+                <Input
                   type="text"
                   readOnly
                   value={hash}
-                  className="flex-grow p-3 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none"
+                  className="font-mono text-sm"
                 />
-                <button
+                <Button
+                  variant="outline"
+                  size="icon"
                   onClick={() => copyToClipboard(hash, algo)}
-                  className="p-3 bg-main text-text border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all"
                   title="Copy"
                 >
-                  {copiedAlgo === algo ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                </button>
+                  {copiedAlgo === algo ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                </Button>
               </div>
             </div>
           ))}

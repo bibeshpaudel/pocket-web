@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { ArrowDownUp, Copy, Trash2, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Textarea } from '../components/ui/Textarea';
 
 export default function UrlEncoder() {
   const [input, setInput] = useState('');
@@ -45,19 +47,16 @@ export default function UrlEncoder() {
     >
       <div className="grid gap-6">
         <div className="flex justify-center">
-          <button
-            onClick={toggleMode}
-            className="flex items-center gap-2 bg-main text-text px-6 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold"
-          >
-            <ArrowDownUp className="w-4 h-4" />
+          <Button onClick={toggleMode} variant="outline">
+            <ArrowDownUp className="mr-2 h-4 w-4" />
             Switch to {mode === 'encode' ? 'Decode' : 'Encode'}
-          </button>
+          </Button>
         </div>
 
-        <div>
-          <label className="block font-bold mb-2">{mode === 'encode' ? 'Text' : 'Encoded'} Input</label>
-          <textarea
-            className="w-full h-32 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none focus:shadow-light dark:focus:shadow-dark transition-shadow resize-y"
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">{mode === 'encode' ? 'Text' : 'Encoded'} Input</label>
+          <Textarea
+            className="h-32 resize-y font-mono text-sm"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={mode === 'encode' ? 'Type text to encode...' : 'Paste URL to decode...'}
@@ -65,34 +64,33 @@ export default function UrlEncoder() {
         </div>
 
         <div className="flex gap-4">
-          <button
-            onClick={handleConvert}
-            className="bg-main text-text px-6 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold"
-          >
+          <Button onClick={handleConvert}>
             {mode === 'encode' ? 'Encode' : 'Decode'}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="destructive"
             onClick={() => { setInput(''); setOutput(''); }}
-            className="bg-red-400 text-text px-6 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold flex items-center gap-2"
           >
-            <Trash2 className="w-4 h-4" /> Clear
-          </button>
+            <Trash2 className="mr-2 h-4 w-4" /> Clear
+          </Button>
         </div>
 
-        <div>
+        <div className="space-y-2">
           <div className="flex justify-between items-center mb-2">
-            <label className="block font-bold">{mode === 'encode' ? 'Encoded' : 'Decoded'} Output</label>
-            <button
+            <label className="text-sm font-medium leading-none">{mode === 'encode' ? 'Encoded' : 'Decoded'} Output</label>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={copyToClipboard}
-              className="text-sm flex items-center gap-1 hover:underline"
+              className="h-8"
             >
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="mr-2 h-3.5 w-3.5" /> : <Copy className="mr-2 h-3.5 w-3.5" />}
               {copied ? 'Copied!' : 'Copy'}
-            </button>
+            </Button>
           </div>
-          <textarea
+          <Textarea
             readOnly
-            className="w-full h-32 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none resize-y"
+            className="h-32 resize-y font-mono text-sm"
             value={output}
           />
         </div>

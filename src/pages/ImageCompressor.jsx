@@ -2,6 +2,8 @@ import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import imageCompression from 'browser-image-compression';
 import { Upload, Download, Image as ImageIcon } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function ImageCompressor() {
   const [originalImage, setOriginalImage] = useState(null);
@@ -42,8 +44,8 @@ export default function ImageCompressor() {
     >
       <div className="space-y-8">
         <div className="flex justify-center">
-          <label className="flex flex-col items-center justify-center w-full h-64 border-4 border-dashed border-border dark:border-darkBorder rounded-base bg-bg dark:bg-darkBg cursor-pointer hover:bg-main/20 transition-colors">
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+          <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-muted rounded-lg bg-muted/20 cursor-pointer hover:bg-muted/40 hover:border-primary/50 transition-all">
+            <div className="flex flex-col items-center justify-center pt-5 pb-6 text-muted-foreground">
               <Upload className="w-12 h-12 mb-4 opacity-50" />
               <p className="mb-2 text-lg font-bold">Click to upload image</p>
               <p className="text-sm opacity-70">PNG, JPG, WEBP up to 10MB</p>
@@ -58,40 +60,45 @@ export default function ImageCompressor() {
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <ImageIcon className="w-5 h-5" /> Original
               </h3>
-              <div className="bg-bg dark:bg-darkBg p-4 border-2 border-border dark:border-darkBorder rounded-base">
-                <img src={originalImage} alt="Original" className="w-full h-auto rounded-sm mb-2" />
-                <p className="font-mono text-sm">Size: {originalSize.toFixed(2)} MB</p>
-              </div>
+              <Card>
+                <CardContent className="p-4">
+                  <img src={originalImage} alt="Original" className="w-full h-auto rounded-sm mb-2" />
+                  <p className="font-mono text-sm text-muted-foreground">Size: {originalSize.toFixed(2)} MB</p>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <ImageIcon className="w-5 h-5" /> Compressed
               </h3>
-              <div className="bg-bg dark:bg-darkBg p-4 border-2 border-border dark:border-darkBorder rounded-base">
-                {isCompressing ? (
-                  <div className="flex items-center justify-center h-48">
-                    <p className="animate-pulse font-bold">Compressing...</p>
-                  </div>
-                ) : (
-                  <>
-                    <img src={compressedImage} alt="Compressed" className="w-full h-auto rounded-sm mb-2" />
-                    <p className="font-mono text-sm mb-4">
-                      Size: {compressedSize.toFixed(2)} MB 
-                      <span className="text-green-600 ml-2">
-                        (-{((1 - compressedSize / originalSize) * 100).toFixed(0)}%)
-                      </span>
-                    </p>
-                    <a
-                      href={compressedImage}
-                      download="compressed-image.jpg"
-                      className="flex items-center justify-center gap-2 w-full bg-main text-text px-4 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold"
-                    >
-                      <Download className="w-4 h-4" /> Download
-                    </a>
-                  </>
-                )}
-              </div>
+              <Card>
+                <CardContent className="p-4">
+                  {isCompressing ? (
+                    <div className="flex items-center justify-center h-48">
+                      <p className="animate-pulse font-bold text-primary">Compressing...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <img src={compressedImage} alt="Compressed" className="w-full h-auto rounded-sm mb-2" />
+                      <p className="font-mono text-sm mb-4">
+                        Size: {compressedSize.toFixed(2)} MB 
+                        <span className="text-green-600 dark:text-green-400 ml-2 font-bold">
+                          (-{((1 - compressedSize / originalSize) * 100).toFixed(0)}%)
+                        </span>
+                      </p>
+                      <Button asChild className="w-full">
+                        <a
+                          href={compressedImage}
+                          download="compressed-image.jpg"
+                        >
+                          <Download className="mr-2 h-4 w-4" /> Download
+                        </a>
+                      </Button>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           </div>
         )}

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent } from '../components/ui/Card';
 
 const units = {
   length: {
@@ -79,59 +82,61 @@ export default function UnitConverter() {
     >
       <div className="grid gap-6">
         <div className="flex justify-center mb-4">
-          <div className="flex gap-2 p-1 bg-slate-900/50 border border-white/10 rounded-base">
+          <div className="flex gap-2 p-1 bg-muted rounded-lg">
             {Object.keys(units).map((cat) => (
-              <button
+              <Button
                 key={cat}
+                variant={category === cat ? 'default' : 'ghost'}
+                size="sm"
                 onClick={() => setCategory(cat)}
-                className={`px-4 py-2 rounded-sm font-bold capitalize transition-colors ${
-                  category === cat ? 'bg-accent text-white' : 'hover:bg-white/5 text-textSecondary hover:text-text'
-                }`}
+                className="capitalize font-bold"
               >
                 {cat}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
-          <div className="space-y-4">
-            <label className="block font-bold text-textSecondary">From</label>
-            <input
-              type="number"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              className="w-full font-mono text-lg"
-            />
-            <select
-              value={fromUnit}
-              onChange={(e) => setFromUnit(e.target.value)}
-              className="w-full font-bold capitalize"
-            >
-              {Object.keys(units[category]).map((u) => (
-                <option key={u} value={u}>{u}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex justify-center text-4xl font-bold opacity-50">=</div>
-
-          <div className="space-y-4">
-            <label className="block font-bold text-textSecondary">To</label>
-            <div className="w-full p-3 bg-slate-900/50 border border-white/10 rounded-base font-mono text-lg text-text">
-              {Number(result.toFixed(4))}
+        <Card>
+          <CardContent className="grid md:grid-cols-[1fr_auto_1fr] gap-6 items-center p-6">
+            <div className="space-y-4">
+              <label className="text-sm font-medium leading-none">From</label>
+              <Input
+                type="number"
+                value={value}
+                onChange={(e) => setValue(Number(e.target.value))}
+                className="font-mono text-lg"
+              />
+              <select
+                value={fromUnit}
+                onChange={(e) => setFromUnit(e.target.value)}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 capitalize font-medium"
+              >
+                {Object.keys(units[category]).map((u) => (
+                  <option key={u} value={u}>{u}</option>
+                ))}
+              </select>
             </div>
-            <select
-              value={toUnit}
-              onChange={(e) => setToUnit(e.target.value)}
-              className="w-full font-bold capitalize"
-            >
-              {Object.keys(units[category]).map((u) => (
-                <option key={u} value={u}>{u}</option>
-              ))}
-            </select>
-          </div>
-        </div>
+
+            <div className="flex justify-center text-4xl font-bold text-muted-foreground">=</div>
+
+            <div className="space-y-4">
+              <label className="text-sm font-medium leading-none">To</label>
+              <div className="flex h-10 w-full items-center rounded-md border border-input bg-muted px-3 py-2 text-lg font-mono">
+                {Number(result.toFixed(4))}
+              </div>
+              <select
+                value={toUnit}
+                onChange={(e) => setToUnit(e.target.value)}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 capitalize font-medium"
+              >
+                {Object.keys(units[category]).map((u) => (
+                  <option key={u} value={u}>{u}</option>
+                ))}
+              </select>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </ToolLayout>
   );

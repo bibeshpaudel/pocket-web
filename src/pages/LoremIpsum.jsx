@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { Copy, RefreshCw, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Textarea } from '../components/ui/Textarea';
+import { Card, CardContent } from '../components/ui/Card';
 
 export default function LoremIpsum() {
   const [paragraphs, setParagraphs] = useState(3);
@@ -12,11 +16,6 @@ export default function LoremIpsum() {
     
     let result = [];
     for (let i = 0; i < paragraphs; i++) {
-      // Shuffle words slightly to make paragraphs look different
-      const words = lorem.split(' ');
-      const shuffled = words.sort(() => 0.5 - Math.random()).join(' ');
-      // Ensure it starts with Lorem ipsum for the first paragraph if desired, but random is fine for variation
-      // Let's just repeat the standard text for now but maybe slice it differently
       result.push(lorem);
     }
     setText(result.join('\n\n'));
@@ -41,40 +40,39 @@ export default function LoremIpsum() {
       description="Generate placeholder text for your designs."
     >
       <div className="grid gap-6">
-        <div className="flex items-end gap-4">
-          <div className="flex-grow">
-            <label className="block font-bold mb-2 text-textSecondary">Paragraphs</label>
-            <input
-              type="number"
-              min="1"
-              max="20"
-              value={paragraphs}
-              onChange={(e) => setParagraphs(Number(e.target.value))}
-              className="w-full font-bold"
-            />
-          </div>
-          <button
-            onClick={generateLorem}
-            className="bg-accent hover:bg-accentHover text-white px-6 py-2 rounded-base transition-colors font-bold flex items-center gap-2 h-[42px]"
-          >
-            <RefreshCw className="w-5 h-5" /> Generate
-          </button>
-        </div>
+        <Card>
+          <CardContent className="flex items-end gap-4 pt-6">
+            <div className="flex-grow space-y-2">
+              <label className="text-sm font-medium leading-none">Paragraphs</label>
+              <Input
+                type="number"
+                min="1"
+                max="20"
+                value={paragraphs}
+                onChange={(e) => setParagraphs(Number(e.target.value))}
+              />
+            </div>
+            <Button onClick={generateLorem}>
+              <RefreshCw className="mr-2 h-4 w-4" /> Generate
+            </Button>
+          </CardContent>
+        </Card>
 
         <div className="relative group">
-          <textarea
+          <Textarea
             readOnly
             value={text}
-            className="w-full h-96 p-6 bg-slate-900/50 border border-white/10 rounded-base font-serif text-lg leading-relaxed focus:outline-none resize-y text-text"
+            className="h-96 p-6 font-serif text-lg leading-relaxed resize-y"
           />
-          <button
+          <Button
+            size="sm"
+            variant="secondary"
             onClick={copyToClipboard}
-            className="absolute top-4 right-4 p-2 bg-slate-800/80 hover:bg-accent text-white border border-white/10 rounded-base transition-colors opacity-0 group-hover:opacity-100 flex items-center gap-2"
-            title="Copy"
+            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
           >
-            {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-            {copied && <span className="text-xs font-bold">Copied!</span>}
-          </button>
+            {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+            {copied ? 'Copied!' : 'Copy'}
+          </Button>
         </div>
       </div>
     </ToolLayout>

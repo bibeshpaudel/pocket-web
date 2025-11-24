@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import ToolLayout from '../components/ToolLayout';
+import { Card, CardContent } from '../components/ui/Card';
+import { Textarea } from '../components/ui/Textarea';
 
 export default function WordCounter() {
   const [text, setText] = useState('');
@@ -26,28 +28,36 @@ export default function WordCounter() {
     >
       <div className="grid gap-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-accent/20 border border-accent/50 rounded-base text-center">
-            <div className="text-3xl font-heading text-text">{stats.words}</div>
-            <div className="text-sm font-bold text-textSecondary">Words</div>
-          </div>
-          <div className="p-4 bg-slate-900/50 border border-white/10 rounded-base text-center">
-            <div className="text-3xl font-heading text-text">{stats.characters}</div>
-            <div className="text-sm font-bold text-textSecondary">Characters</div>
-          </div>
-          <div className="p-4 bg-slate-900/50 border border-white/10 rounded-base text-center">
-            <div className="text-3xl font-heading text-text">{stats.sentences}</div>
-            <div className="text-sm font-bold text-textSecondary">Sentences</div>
-          </div>
-          <div className="p-4 bg-slate-900/50 border border-white/10 rounded-base text-center">
-            <div className="text-3xl font-heading text-text">{stats.paragraphs}</div>
-            <div className="text-sm font-bold text-textSecondary">Paragraphs</div>
-          </div>
+          <Card className="bg-primary/10 border-primary/20">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="text-3xl font-bold text-primary">{stats.words}</div>
+              <div className="text-sm font-medium text-muted-foreground">Words</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="text-3xl font-bold">{stats.characters}</div>
+              <div className="text-sm font-medium text-muted-foreground">Characters</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="text-3xl font-bold">{stats.sentences}</div>
+              <div className="text-sm font-medium text-muted-foreground">Sentences</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="text-3xl font-bold">{stats.paragraphs}</div>
+              <div className="text-sm font-medium text-muted-foreground">Paragraphs</div>
+            </CardContent>
+          </Card>
         </div>
 
-        <div>
-          <label className="block font-bold mb-2 text-textSecondary">Text Input</label>
-          <textarea
-            className="w-full h-64 p-4 bg-slate-900/50 border border-white/10 rounded-base font-mono text-sm focus:outline-none focus:border-accent transition-colors resize-y text-text"
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Text Input</label>
+          <Textarea
+            className="h-64 resize-y"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Start typing or paste text here..."

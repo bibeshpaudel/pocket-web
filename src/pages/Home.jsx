@@ -1,81 +1,48 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { tools } from '../data/tools';
-import { usePinnedTools } from '../contexts/PinnedToolsContext';
-import { Pin } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { ArrowRight } from 'lucide-react';
 
-export default function Home({ searchTerm }) {
-  const { pinnedTools } = usePinnedTools();
-
-  const filteredTools = tools.filter(tool => 
-    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tool.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const pinnedToolObjects = tools.filter(tool => pinnedTools.includes(tool.id));
-  
-  const categories = [...new Set(filteredTools.map(tool => tool.category))];
+export default function Home() {
+  const navigate = useNavigate();
 
   return (
-    <div className="space-y-12">
-      {/* Pinned Section */}
-      {pinnedToolObjects.length > 0 && !searchTerm && (
-        <section>
-          <h2 className="text-sm font-bold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2">
-            <Pin className="w-4 h-4" /> Pinned Tools
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {pinnedToolObjects.map(tool => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Main Grid */}
-      {searchTerm ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredTools.map(tool => (
-            <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </div>
-      ) : (
-        categories.map(category => (
-          <section key={category}>
-            <h2 className="text-sm font-bold text-textSecondary uppercase tracking-wider mb-4">{category}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredTools.filter(t => t.category === category).map(tool => (
-                <ToolCard key={tool.id} tool={tool} />
-              ))}
-            </div>
-          </section>
-        ))
-      )}
-
-      {filteredTools.length === 0 && (
-        <div className="text-center py-20">
-          <p className="text-textSecondary text-lg">No tools found matching "{searchTerm}"</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ToolCard({ tool }) {
-  return (
-    <Link 
-      to={tool.path}
-      className="group block p-6 bg-surface backdrop-blur-md border border-border rounded-base hover:border-accent/50 hover:bg-slate-800/60 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300"
-    >
-      <div className="flex items-start gap-4">
-        <div className="p-3 rounded-base bg-slate-900/50 border border-border group-hover:border-accent/50 group-hover:text-accent transition-colors">
-          <tool.icon className="w-6 h-6" />
-        </div>
-        <div>
-          <h3 className="font-bold text-lg mb-1 text-text group-hover:text-accent transition-colors">{tool.name}</h3>
-          <p className="text-textSecondary text-sm leading-relaxed">{tool.description}</p>
-        </div>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">
+          Welcome to Pocket. Select a tool to get started.
+        </p>
       </div>
-    </Link>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {tools.filter(t => t.id !== 'json-to-model').map((tool) => (
+          <Card 
+            key={tool.id} 
+            className="group relative overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm"
+            onClick={() => navigate(tool.path)}
+          >
+            <CardHeader className="pb-4">
+              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                <tool.icon className="h-5 w-5" />
+              </div>
+              <CardTitle className="text-lg">{tool.name}</CardTitle>
+              <CardDescription className="line-clamp-2">
+                {tool.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <Badge variant="secondary" className="text-xs font-normal">
+                  {tool.category}
+                </Badge>
+                <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,23 +1,33 @@
+import { useState } from 'react';
+import Sidebar from './Sidebar';
 import Header from './Header';
-import Footer from './Footer';
-import BackgroundOrbs from './BackgroundOrbs';
+import CommandPalette from './CommandPalette';
 
-export default function Layout({ children, searchTerm, onSearchChange }) {
+export default function Layout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-bg text-text font-sans antialiased flex flex-col selection:bg-accent selection:text-white relative overflow-hidden">
-      <BackgroundOrbs />
+    <div className="min-h-screen bg-background font-sans antialiased text-foreground">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <Header searchTerm={searchTerm} onSearchChange={onSearchChange} />
+      <div className="flex min-h-screen flex-col md:pl-64 transition-all duration-200 ease-in-out">
+        <Header 
+          onMenuClick={() => setSidebarOpen(true)} 
+          onCommandClick={() => setCommandPaletteOpen(true)}
+        />
         
-        <main className="flex-grow container mx-auto px-4 py-12">
-          <div className="max-w-6xl mx-auto">
+        <main className="flex-1 p-6 overflow-x-hidden">
+          <div className="mx-auto max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-500">
             {children}
           </div>
         </main>
-
-        <Footer />
       </div>
+
+      <CommandPalette 
+        isOpen={commandPaletteOpen} 
+        onClose={setCommandPaletteOpen} 
+      />
     </div>
   );
 }

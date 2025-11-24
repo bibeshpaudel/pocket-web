@@ -3,7 +3,6 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import JsonFormatter from './pages/JsonFormatter';
 import XmlFormatter from './pages/XmlFormatter';
-import JsonToModel from './pages/JsonToModel';
 import QrGenerator from './pages/QrGenerator';
 import ImageCompressor from './pages/ImageCompressor';
 import PasswordGenerator from './pages/PasswordGenerator';
@@ -25,47 +24,40 @@ import UuidGenerator from './pages/UuidGenerator';
 import UnitConverter from './pages/UnitConverter';
 import TimestampConverter from './pages/TimestampConverter';
 import TimezoneConverter from './pages/TimezoneConverter';
-import { useState } from 'react';
 
-import { PinnedToolsProvider } from './contexts/PinnedToolsContext';
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('');
-
   return (
-    <PinnedToolsProvider>
-      <Router>
-        <Layout searchTerm={searchTerm} onSearchChange={setSearchTerm}>
+      <Router basename={import.meta.env.BASE_URL}>
+        <Layout>
           <Routes>
-            <Route path="/" element={<Home searchTerm={searchTerm} />} />
-          <Route path="/json-formatter" element={<JsonFormatter />} />
-          <Route path="/xml-formatter" element={<XmlFormatter />} />
-          <Route path="/json-to-model" element={<JsonToModel />} />
-          <Route path="/qr-generator" element={<QrGenerator />} />
-          <Route path="/image-compressor" element={<ImageCompressor />} />
-          <Route path="/password-generator" element={<PasswordGenerator />} />
-          <Route path="/markdown-preview" element={<MarkdownPreview />} />
-          <Route path="/base64-converter" element={<Base64Converter />} />
-          <Route path="/syntax-highlighter" element={<SyntaxHighlighterTool />} />
-          <Route path="/text-compare" element={<TextCompare />} />
-          <Route path="/case-converter" element={<CaseConverter />} />
-          <Route path="/word-counter" element={<WordCounter />} />
-          <Route path="/regex-tester" element={<RegexTester />} />
-          <Route path="/hash-generator" element={<HashGenerator />} />
-          <Route path="/aes-encrypt" element={<AesEncrypt />} />
-          <Route path="/url-encoder" element={<UrlEncoder />} />
-          <Route path="/ip-lookup" element={<IpLookup />} />
-          <Route path="/image-converter" element={<ImageConverter />} />
-          <Route path="/svg-viewer" element={<SvgViewer />} />
-          <Route path="/lorem-ipsum" element={<LoremIpsum />} />
-          <Route path="/uuid-generator" element={<UuidGenerator />} />
-          <Route path="/unit-converter" element={<UnitConverter />} />
-          <Route path="/timestamp-converter" element={<TimestampConverter />} />
-          <Route path="/timezone-converter" element={<TimezoneConverter />} />
-        </Routes>
-      </Layout>
-    </Router>
-    </PinnedToolsProvider>
+            <Route path="/" element={<Home />} />
+            <Route path="/json-formatter" element={<JsonFormatter />} />
+            <Route path="/xml-formatter" element={<XmlFormatter />} />
+            <Route path="/qr-generator" element={<QrGenerator />} />
+            <Route path="/image-compressor" element={<ImageCompressor />} />
+            <Route path="/password-generator" element={<PasswordGenerator />} />
+            <Route path="/markdown-preview" element={<MarkdownPreview />} />
+            <Route path="/base64-converter" element={<Base64Converter />} />
+            <Route path="/syntax-highlighter" element={<SyntaxHighlighterTool />} />
+            <Route path="/text-compare" element={<TextCompare />} />
+            <Route path="/case-converter" element={<CaseConverter />} />
+            <Route path="/word-counter" element={<WordCounter />} />
+            <Route path="/regex-tester" element={<RegexTester />} />
+            <Route path="/hash-generator" element={<HashGenerator />} />
+            <Route path="/aes-encrypt" element={<AesEncrypt />} />
+            <Route path="/url-encoder" element={<UrlEncoder />} />
+            <Route path="/ip-lookup" element={<IpLookup />} />
+            <Route path="/image-converter" element={<ImageConverter />} />
+            <Route path="/svg-viewer" element={<SvgViewer />} />
+            <Route path="/lorem-ipsum" element={<LoremIpsum />} />
+            <Route path="/uuid-generator" element={<UuidGenerator />} />
+            <Route path="/unit-converter" element={<UnitConverter />} />
+            <Route path="/timestamp-converter" element={<TimestampConverter />} />
+            <Route path="/timezone-converter" element={<TimezoneConverter />} />
+          </Routes>
+        </Layout>
+      </Router>
   );
 }
 

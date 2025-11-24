@@ -1,30 +1,55 @@
-import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
-import logo from '../assets/logo.svg';
+import { useState, useEffect } from 'react';
+import { Menu, Moon, Sun, Search, Command } from 'lucide-react';
+import { Button } from './ui/Button';
 
-export default function Header({ searchTerm, onSearchChange }) {
+export default function Header({ onMenuClick, onCommandClick }) {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
-    <header className="border-b border-border bg-surface backdrop-blur-md sticky top-0 z-30">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        <Link to="/" className="text-xl font-bold tracking-tight text-text hover:text-accent transition-colors flex items-center gap-2">
-          <img src={logo} alt="Pocket Logo" className="h-8 w-8" />
-          Pocket
-        </Link>
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/95 px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex items-center gap-4">
+        <button onClick={onMenuClick} className="md:hidden text-muted-foreground hover:text-foreground">
+          <Menu className="h-6 w-6" />
+        </button>
         
-        <div className="flex-1 max-w-md relative group">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-textSecondary group-focus-within:text-accent transition-colors" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search tools..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2 border border-border rounded-base leading-5 bg-slate-900/50 text-text placeholder-textSecondary focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent sm:text-sm transition-all"
-          />
+        {/* Mobile Logo (only visible when sidebar is hidden on mobile) */}
+        <div className="md:hidden font-bold text-xl text-primary">
+          Pocket
         </div>
+      </div>
 
-        <div className="w-20"></div> {/* Spacer for balance */}
+      <div className="flex items-center gap-4">
+        <Button
+          variant="outline"
+          className="relative h-9 w-9 p-0 xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2 text-muted-foreground"
+          onClick={onCommandClick}
+        >
+          <Search className="h-4 w-4 xl:mr-2" />
+          <span className="hidden xl:inline-flex">Search tools...</span>
+          <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        </Button>
+
+        <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-muted-foreground">
+          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        </Button>
       </div>
     </header>
   );

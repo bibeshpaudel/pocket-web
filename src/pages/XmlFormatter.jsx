@@ -1,12 +1,30 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
-import { Copy, Trash2, Check } from 'lucide-react';
+import { Copy, Trash2, Download, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Textarea } from '../components/ui/Textarea';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function XmlFormatter() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  // Listen for theme changes
+  useState(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+      });
+    });
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   const formatXml = (xml) => {
     let formatted = '';
@@ -76,62 +94,80 @@ export default function XmlFormatter() {
     setError('');
   };
 
+  const downloadXml = () => {
+    if (!output) return;
+    const blob = new Blob([output], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'formatted.xml';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <ToolLayout
       title="XML Formatter"
       description="Format and validate XML data with proper indentation."
     >
-      <div className="grid gap-6">
-        <div>
-          <label className="block font-bold mb-2">Input XML</label>
-          <textarea
-            className="w-full h-48 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none focus:shadow-light dark:focus:shadow-dark transition-shadow resize-y"
+      <div className="grid gap-6 lg:grid-cols-2 h-full">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium leading-none">Input XML</label>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={clearAll} className="h-8">
+                <Trash2 className="mr-2 h-3.5 w-3.5" /> Clear
+              </Button>
+              <Button size="sm" onClick={handleFormat} className="h-8">
+                Format
+              </Button>
+            </div>
+          </div>
+          <Textarea
+            className="h-[500px] font-mono text-sm resize-none"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Paste your XML here..."
           />
         </div>
 
-        <div className="flex gap-4 flex-wrap">
-          <button
-            onClick={handleFormat}
-            className="bg-main text-text px-6 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold"
-          >
-            Format XML
-          </button>
-          <button
-            onClick={clearAll}
-            className="bg-red-400 text-text px-6 py-2 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark hover:translate-x-box hover:translate-y-box hover:shadow-none dark:hover:shadow-none transition-all font-bold flex items-center gap-2"
-          >
-            <Trash2 className="w-4 h-4" /> Clear
-          </button>
-        </div>
-
-        {error && (
-          <div className="p-4 bg-red-200 text-red-800 border-2 border-red-800 rounded-base">
-            {error}
-          </div>
-        )}
-
-        {output && (
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="block font-bold">Formatted Output</label>
-              <button
-                onClick={copyToClipboard}
-                className="text-sm flex items-center gap-1 hover:underline"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium leading-none">Formatted Output</label>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={downloadXml} disabled={!output} className="h-8">
+                <Download className="mr-2 h-3.5 w-3.5" /> Download
+              </Button>
+              <Button variant="outline" size="sm" onClick={copyToClipboard} disabled={!output} className="h-8">
+                {copied ? <Check className="mr-2 h-3.5 w-3.5" /> : <Copy className="mr-2 h-3.5 w-3.5" />}
+                {copied ? 'Copied' : 'Copy'}
+              </Button>
             </div>
-            <textarea
-              readOnly
-              className="w-full h-96 p-4 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base font-mono text-sm focus:outline-none resize-y"
-              value={output}
-            />
           </div>
-        )}
+          
+          <div className="relative h-[500px] rounded-md border border-input bg-muted/50 overflow-hidden">
+            {error ? (
+              <div className="p-4 text-sm text-destructive bg-destructive/10 h-full">
+                {error}
+              </div>
+            ) : output ? (
+              <SyntaxHighlighter
+                language="xml"
+                style={theme === 'dark' ? vscDarkPlus : vs}
+                customStyle={{ margin: 0, height: '100%', borderRadius: 0, fontSize: '14px', backgroundColor: 'transparent' }}
+                showLineNumbers={true}
+              >
+                {output}
+              </SyntaxHighlighter>
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                Formatted XML will appear here
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </ToolLayout>
   );

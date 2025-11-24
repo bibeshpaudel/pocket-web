@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import { Copy, Trash2, Check } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Textarea } from '../components/ui/Textarea';
 
 export default function CaseConverter() {
   const [text, setText] = useState('');
@@ -54,10 +56,10 @@ export default function CaseConverter() {
       description="Convert text between different cases (upper, lower, camel, snake, etc.)."
     >
       <div className="grid gap-6">
-        <div>
-          <label className="block font-bold mb-2 text-textSecondary">Text Input</label>
-          <textarea
-            className="w-full h-48 p-4 bg-slate-900/50 border border-white/10 rounded-base font-mono text-sm focus:outline-none focus:border-accent transition-colors resize-y text-text"
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Text Input</label>
+          <Textarea
+            className="h-48 resize-y"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Type or paste text here..."
@@ -74,30 +76,28 @@ export default function CaseConverter() {
             { id: 'snake', label: 'snake_case' },
             { id: 'kebab', label: 'kebab-case' },
           ].map((btn) => (
-            <button
+            <Button
               key={btn.id}
+              variant="outline"
               onClick={() => convertCase(btn.id)}
-              className="bg-slate-800 hover:bg-accent text-text hover:text-white px-4 py-2 border border-white/10 rounded-base transition-colors font-bold text-sm"
+              className="font-bold"
             >
               {btn.label}
-            </button>
+            </Button>
           ))}
         </div>
 
         <div className="flex gap-4">
-          <button
-            onClick={copyToClipboard}
-            className="bg-accent hover:bg-accentHover text-white px-6 py-2 rounded-base transition-colors font-bold flex items-center gap-2"
-          >
-            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          <Button onClick={copyToClipboard}>
+            {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
             {copied ? 'Copied!' : 'Copy Result'}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="destructive"
             onClick={() => setText('')}
-            className="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-6 py-2 border border-red-500/50 rounded-base transition-colors font-bold flex items-center gap-2"
           >
-            <Trash2 className="w-4 h-4" /> Clear
-          </button>
+            <Trash2 className="mr-2 h-4 w-4" /> Clear
+          </Button>
         </div>
       </div>
     </ToolLayout>
