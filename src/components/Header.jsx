@@ -1,24 +1,44 @@
 import { useState, useEffect } from 'react';
-import { Menu, Moon, Sun, Search, Command } from 'lucide-react';
+import { Menu, Moon, Sun, Search, Monitor } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Header({ onMenuClick, onCommandClick }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'dark';
+      return localStorage.getItem('theme') || 'system';
     }
-    return 'dark';
+    return 'system';
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
-    root.classList.add(theme);
+
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.classList.add(systemTheme);
+      
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = (e) => {
+        root.classList.remove('light', 'dark');
+        root.classList.add(e.matches ? 'dark' : 'light');
+      };
+      
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    } else {
+      root.classList.add(theme);
+    }
+    
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  const cycleTheme = () => {
+    setTheme(prev => {
+      if (prev === 'system') return 'light';
+      if (prev === 'light') return 'dark';
+      return 'system';
+    });
   };
 
   return (
@@ -47,8 +67,16 @@ export default function Header({ onMenuClick, onCommandClick }) {
           </kbd>
         </Button>
 
-        <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-muted-foreground">
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={cycleTheme} 
+          className="text-muted-foreground"
+          title={`Current theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`}
+        >
+          {theme === 'light' && <Sun className="h-5 w-5" />}
+          {theme === 'dark' && <Moon className="h-5 w-5" />}
+          {theme === 'system' && <Monitor className="h-5 w-5" />}
         </Button>
       </div>
     </header>

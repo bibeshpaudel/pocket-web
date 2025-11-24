@@ -2,7 +2,7 @@ import { Github } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-card py-6 text-center text-sm text-muted-foreground mt-auto">
+    <footer className="border-t border-border bg-card py-4 text-center text-xs text-muted-foreground mt-auto">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 md:flex-row">
         <div className="flex flex-col md:text-left">
             <p>&copy; {new Date().getFullYear()} Pocket. All rights reserved.</p>
