@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import CommandPalette from './CommandPalette';
+import Footer from './Footer';
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -17,11 +18,12 @@ export default function Layout({ children }) {
           onCommandClick={() => setCommandPaletteOpen(true)}
         />
         
-        <main className="flex-1 p-6 overflow-x-hidden">
-          <div className="mx-auto max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <main className="flex-1 p-6 overflow-x-hidden flex flex-col">
+          <div className="mx-auto max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 w-full">
             {children}
           </div>
         </main>
+        <Footer />
       </div>
 
       <CommandPalette 
