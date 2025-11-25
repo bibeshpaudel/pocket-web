@@ -19,7 +19,7 @@ export default function Layout({ children }) {
         />
         
         <main className="flex-1 p-6 overflow-x-hidden flex flex-col">
-          <div className="mx-auto max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 w-full">
+          <div className="mx-auto max-w-6xl flex-1 w-full">
             {children}
           </div>
         </main>

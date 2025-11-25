@@ -1,44 +1,26 @@
 import { useState, useEffect } from 'react';
-import { Menu, Moon, Sun, Search, Monitor } from 'lucide-react';
+import { Menu, Moon, Sun, Search } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Header({ onMenuClick, onCommandClick }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'system';
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme && savedTheme !== 'system') return savedTheme;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    return 'system';
+    return 'light';
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.classList.add(systemTheme);
-      
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = (e) => {
-        root.classList.remove('light', 'dark');
-        root.classList.add(e.matches ? 'dark' : 'light');
-      };
-      
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
-    } else {
-      root.classList.add(theme);
-    }
-    
+    root.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   const cycleTheme = () => {
-    setTheme(prev => {
-      if (prev === 'system') return 'light';
-      if (prev === 'light') return 'dark';
-      return 'system';
-    });
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
@@ -72,11 +54,9 @@ export default function Header({ onMenuClick, onCommandClick }) {
           size="icon" 
           onClick={cycleTheme} 
           className="text-muted-foreground"
-          title={`Current theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`}
+          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
         >
-          {theme === 'light' && <Sun className="h-5 w-5" />}
-          {theme === 'dark' && <Moon className="h-5 w-5" />}
-          {theme === 'system' && <Monitor className="h-5 w-5" />}
+          {theme === 'light' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
       </div>
     </header>

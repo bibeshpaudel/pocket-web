@@ -6,6 +6,20 @@
   <link rel="icon" type="image/svg+xml" href="/pocket-web/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pocket</title>
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme') || 'system';
+      const root = document.documentElement;
+      root.classList.remove('light', 'dark');
+
+      if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        root.classList.add(systemTheme);
+      } else {
+        root.classList.add(theme);
+      }
+    })();
+  </script>
 </head>
 
 <body>
