@@ -3,12 +3,17 @@ import { tools } from '../data/tools';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <SEO 
+        title="Dashboard" 
+        description="Pocket - A collection of essential developer tools including JSON Formatter, Image Compressor, and more." 
+      />
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">

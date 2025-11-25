@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
+import SEO from './SEO';
 
 export default function ToolLayout({ title, description, children }) {
   return (
@@ -12,6 +13,8 @@ export default function ToolLayout({ title, description, children }) {
         <ChevronRight className="w-4 h-4 opacity-50" />
         <span className="text-foreground font-medium">{title}</span>
       </nav>
+
+      <SEO title={title} description={description} />
 
       <div className="flex items-start justify-between border-b border-border pb-6">
         <div className="space-y-1">
