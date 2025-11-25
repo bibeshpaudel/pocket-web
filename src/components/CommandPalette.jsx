@@ -47,11 +47,18 @@ export default function CommandPalette({ isOpen, onClose }) {
     setSelectedIndex(0);
   }, [query]);
 
+  useEffect(() => {
+    const element = document.getElementById(`command-item-${selectedIndex}`);
+    if (element) {
+      element.scrollIntoView({ block: 'nearest' });
+    }
+  }, [selectedIndex]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] bg-black/50 backdrop-blur-sm transition-all">
-      <div className="w-full max-w-lg transform rounded-xl bg-popover p-0 shadow-2xl transition-all border border-border">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] bg-black/50 backdrop-blur-sm transition-all animate-in fade-in duration-200">
+      <div className="w-full max-w-lg transform rounded-xl bg-popover p-0 shadow-2xl transition-all border border-border animate-in zoom-in-95 duration-200">
         <div className="flex items-center border-b border-border px-4" cmdk-input-wrapper="">
           <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
           <input
@@ -65,7 +72,7 @@ export default function CommandPalette({ isOpen, onClose }) {
             <X className="h-4 w-4 opacity-50" />
           </button>
         </div>
-        <div className="max-h-[300px] overflow-y-auto p-2">
+        <div className="max-h-[300px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/40">
           {filteredTools.length === 0 ? (
             <p className="p-4 text-center text-sm text-muted-foreground">No results found.</p>
           ) : (
@@ -73,6 +80,7 @@ export default function CommandPalette({ isOpen, onClose }) {
               {filteredTools.map((tool, index) => (
                 <div
                   key={tool.id}
+                  id={`command-item-${index}`}
                   className={cn(
                     "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-primary aria-selected:text-primary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                     index === selectedIndex ? "bg-primary text-primary-foreground" : ""

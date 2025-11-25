@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="h-[calc(100vh-4rem)] overflow-y-auto px-4 py-4">
+        <div className="h-[calc(100vh-4rem)] overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/40">
           <div className="mb-6">
             <NavLink
               to="/"

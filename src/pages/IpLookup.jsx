@@ -35,7 +35,27 @@ export default function IpLookup() {
     setData(null);
 
     try {
-      const res = await fetch(`https://ipwho.is/${ip}`);
+      // Remove protocol and path if present
+      let targetIp = ip.replace(/^https?:\/\//, '').split('/')[0];
+      
+      // Check if input is a domain (contains letters)
+      if (/[a-zA-Z]/.test(targetIp)) {
+        const dnsRes = await fetch(`https://dns.google/resolve?name=${targetIp}`);
+        const dnsJson = await dnsRes.json();
+        
+        if (dnsJson.Status !== 0 || !dnsJson.Answer) {
+          throw new Error('Could not resolve domain');
+        }
+        
+        // Find the first A record (type 1)
+        const aRecord = dnsJson.Answer.find(r => r.type === 1);
+        if (!aRecord) {
+          throw new Error('No A record found for domain');
+        }
+        targetIp = aRecord.data;
+      }
+
+      const res = await fetch(`https://ipwho.is/${targetIp}`);
       const json = await res.json();
       if (!json.success) {
         throw new Error(json.message || 'Invalid IP/Domain');
