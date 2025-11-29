@@ -16,6 +16,7 @@ Pocket bundles over 20+ essential tools into a single, offline-capable applicati
 - **JSON Formatter**: Minify, beautify, and validate JSON with syntax highlighting.
 - **XML Formatter**: Format and validate XML data.
 - **Markdown Preview**: Real-time Markdown editing and previewing.
+- **Mermaid Editor**: Create diagrams using code with real-time preview.
 
 ### 🔐 Security & Cryptography
 - **AES Encrypt/Decrypt**: Securely encrypt text using AES.
