@@ -20,7 +20,8 @@ import {
   Globe,
   Regex,
   Network,
-  FileDigit
+  FileDigit,
+  Code
 } from 'lucide-react';
 
 export const tools = [
@@ -208,5 +209,13 @@ export const tools = [
     path: '/ip-lookup',
     icon: Network,
     category: 'Web'
-  }
+  },
+  {
+    id: 'mermaid-editor',
+    name: 'Mermaid Editor',
+    description: 'Create diagrams using code with real-time preview.',
+    path: '/mermaid-editor',
+    icon: Code,
+    category: 'Generators',
+  },
 ];

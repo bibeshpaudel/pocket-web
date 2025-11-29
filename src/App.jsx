@@ -25,6 +25,7 @@ import UuidGenerator from './pages/UuidGenerator';
 import UnitConverter from './pages/UnitConverter';
 import TimestampConverter from './pages/TimestampConverter';
 import TimezoneConverter from './pages/TimezoneConverter';
+import MermaidEditor from './pages/MermaidEditor';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
               <Route path="/unit-converter" element={<UnitConverter />} />
               <Route path="/timestamp-converter" element={<TimestampConverter />} />
               <Route path="/timezone-converter" element={<TimezoneConverter />} />
+              <Route path="/mermaid-editor" element={<MermaidEditor />} />
             </Routes>
           </Layout>
         </Router>
