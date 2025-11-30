@@ -25,7 +25,8 @@ import {
   FileText as PdfIcon,
   Merge,
   FileSpreadsheet,
-  KeyRound
+  KeyRound,
+  Database
 } from 'lucide-react';
 
 export const tools = [
@@ -244,7 +245,15 @@ export const tools = [
     description: 'Convert between CSV and JSON',
     path: '/csv-json',
     icon: FileSpreadsheet,
-    category: 'Converters'
+    category: 'CSV Tools'
+  },
+  {
+    id: 'csv-sql',
+    name: 'CSV to SQL',
+    description: 'Convert CSV files to SQL INSERT statements with a spreadsheet editor.',
+    path: '/csv-sql',
+    icon: Database,
+    category: 'CSV Tools'
   },
   {
     id: 'csv-editor',
@@ -252,7 +261,7 @@ export const tools = [
     description: 'View and edit CSV files',
     path: '/csv-editor',
     icon: FileSpreadsheet,
-    category: 'Text'
+    category: 'CSV Tools'
   },
   {
     id: 'jwt-debugger',

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/Layout';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import JsonFormatter from './pages/JsonFormatter';
 import XmlFormatter from './pages/XmlFormatter';
@@ -30,6 +31,7 @@ import PdfToText from './pages/PdfToText';
 import PdfMerge from './pages/PdfMerge';
 import CsvJsonConverter from './pages/CsvJsonConverter';
 import CsvEditor from './pages/CsvEditor';
+import CsvSqlTool from './pages/CsvSqlTool';
 import JwtDebugger from './pages/JwtDebugger';
 
 
@@ -37,6 +39,7 @@ function App() {
   return (
       <HelmetProvider>
         <Router basename={import.meta.env.BASE_URL}>
+          <ScrollToTop />
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -68,6 +71,7 @@ function App() {
               <Route path="/pdf-merge" element={<PdfMerge />} />
               <Route path="/csv-json" element={<CsvJsonConverter />} />
               <Route path="/csv-editor" element={<CsvEditor />} />
+              <Route path="/csv-sql" element={<CsvSqlTool />} />
               <Route path="/jwt-debugger" element={<JwtDebugger />} />
             </Routes>
           </Layout>
