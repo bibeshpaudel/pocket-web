@@ -17,12 +17,17 @@ Pocket bundles over 20+ essential tools into a single, offline-capable applicati
 - **XML Formatter**: Format and validate XML data.
 - **Markdown Preview**: Real-time Markdown editing and previewing.
 - **Mermaid Editor**: Create diagrams using code with real-time preview.
+- **CSV to JSON**: Convert between CSV and JSON formats.
+- **CSV Editor**: View and edit CSV files with a spreadsheet interface.
+- **CSV to SQL**: Convert CSV data to SQL INSERT statements.
+- **Syntax Highlighter**: Highlight code for various languages.
 
 ### 🔐 Security & Cryptography
 - **AES Encrypt/Decrypt**: Securely encrypt text using AES.
 - **Hash Generator**: Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.
 - **Password Generator**: Create strong, customizable passwords.
 - **UUID Generator**: Generate version 4 UUIDs.
+- **JWT Debugger**: Decode and verify JSON Web Tokens.
 
 ### 🔄 Converters
 - **Base64**: Encode and decode Base64 strings.
@@ -36,6 +41,10 @@ Pocket bundles over 20+ essential tools into a single, offline-capable applicati
 - **Image Compressor**: Compress images directly in the browser.
 - **SVG Viewer**: View and edit SVG code with live preview.
 - **QR Code Generator**: Generate QR codes for URLs and text.
+
+### 📄 PDF Tools
+- **PDF to Text**: Extract text content from PDF files.
+- **PDF Merge**: Merge multiple PDF files into a single document.
 
 ### 📝 Text Tools
 - **Case Converter**: Switch between camelCase, snake_case, kebab-case, etc.
