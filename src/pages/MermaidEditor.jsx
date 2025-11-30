@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import ToolLayout from '../components/ToolLayout';
 import mermaid from 'mermaid';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { Download, ZoomIn, ZoomOut, RotateCcw, Image, FileText, LayoutTemplate, Palette } from 'lucide-react';
+import { Download, ZoomIn, ZoomOut, RotateCcw, Image, FileText, LayoutTemplate, Palette, Share2, Check } from 'lucide-react';
 import { toPng, toSvg } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
@@ -97,8 +98,44 @@ export default function MermaidEditor() {
   const [error, setError] = useState('');
   const [svg, setSvg] = useState('');
   const [theme, setTheme] = useState('dark');
+  const [copied, setCopied] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const previewRef = useRef(null);
   const transformComponentRef = useRef(null);
+
+  // Load state from URL on mount
+  useEffect(() => {
+    const codeParam = searchParams.get('code');
+    const themeParam = searchParams.get('theme');
+
+    if (codeParam) {
+      try {
+        const decodedCode = decodeURIComponent(escape(atob(codeParam)));
+        setCode(decodedCode);
+      } catch (e) {
+        console.error('Failed to decode code from URL', e);
+      }
+    }
+
+    if (themeParam && THEMES.some(t => t.id === themeParam)) {
+      setTheme(themeParam);
+    }
+  }, []); // Run once on mount
+
+  const handleShare = async () => {
+    try {
+      const encodedCode = btoa(unescape(encodeURIComponent(code)));
+      const url = new URL(window.location.href);
+      url.searchParams.set('code', encodedCode);
+      url.searchParams.set('theme', theme);
+      
+      await navigator.clipboard.writeText(url.toString());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to share', err);
+    }
+  };
 
   const renderChart = useCallback(async () => {
     try {
@@ -209,14 +246,24 @@ export default function MermaidEditor() {
                     </select>
                 </div>
             </div>
-            <a 
-              href="https://mermaid.js.org/intro/" 
-              target="_blank" 
-              rel="noreferrer"
-              className="text-xs text-muted-foreground hover:text-foreground hover:underline"
-            >
-              Syntax Guide
-            </a>
+
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={handleShare}
+                    className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 rounded-md transition-colors"
+                >
+                    {copied ? <Check size={14} /> : <Share2 size={14} />}
+                    {copied ? 'Copied!' : 'Share'}
+                </button>
+                <a 
+                  href="https://mermaid.js.org/intro/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="text-xs text-muted-foreground hover:text-foreground hover:underline"
+                >
+                  Syntax Guide
+                </a>
+            </div>
           </div>
           <textarea
             value={code}
