@@ -21,7 +21,11 @@ import {
   Regex,
   Network,
   FileDigit,
-  Code
+  Code,
+  FileText as PdfIcon,
+  Merge,
+  FileSpreadsheet,
+  KeyRound
 } from 'lucide-react';
 
 export const tools = [
@@ -217,5 +221,45 @@ export const tools = [
     path: '/mermaid-editor',
     icon: Code,
     category: 'Generators',
+  },
+  {
+    id: 'pdf-to-text',
+    name: 'PDF to Text',
+    description: 'Extract text from PDF files',
+    path: '/pdf-to-text',
+    icon: PdfIcon,
+    category: 'PDF'
+  },
+  {
+    id: 'pdf-merge',
+    name: 'Merge PDFs',
+    description: 'Combine multiple PDFs',
+    path: '/pdf-merge',
+    icon: Merge,
+    category: 'PDF'
+  },
+  {
+    id: 'csv-json',
+    name: 'CSV <-> JSON',
+    description: 'Convert between CSV and JSON',
+    path: '/csv-json',
+    icon: FileSpreadsheet,
+    category: 'Converters'
+  },
+  {
+    id: 'csv-editor',
+    name: 'CSV Editor',
+    description: 'View and edit CSV files',
+    path: '/csv-editor',
+    icon: FileSpreadsheet,
+    category: 'Text'
+  },
+  {
+    id: 'jwt-debugger',
+    name: 'JWT Debugger',
+    description: 'Decode and verify JWTs',
+    path: '/jwt-debugger',
+    icon: KeyRound,
+    category: 'Security'
   },
 ];

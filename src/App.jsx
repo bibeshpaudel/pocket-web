@@ -26,6 +26,11 @@ import UnitConverter from './pages/UnitConverter';
 import TimestampConverter from './pages/TimestampConverter';
 import TimezoneConverter from './pages/TimezoneConverter';
 import MermaidEditor from './pages/MermaidEditor';
+import PdfToText from './pages/PdfToText';
+import PdfMerge from './pages/PdfMerge';
+import CsvJsonConverter from './pages/CsvJsonConverter';
+import CsvEditor from './pages/CsvEditor';
+import JwtDebugger from './pages/JwtDebugger';
 
 
 function App() {
@@ -59,6 +64,11 @@ function App() {
               <Route path="/timestamp-converter" element={<TimestampConverter />} />
               <Route path="/timezone-converter" element={<TimezoneConverter />} />
               <Route path="/mermaid-editor" element={<MermaidEditor />} />
+              <Route path="/pdf-to-text" element={<PdfToText />} />
+              <Route path="/pdf-merge" element={<PdfMerge />} />
+              <Route path="/csv-json" element={<CsvJsonConverter />} />
+              <Route path="/csv-editor" element={<CsvEditor />} />
+              <Route path="/jwt-debugger" element={<JwtDebugger />} />
             </Routes>
           </Layout>
         </Router>
