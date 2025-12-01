@@ -178,9 +178,13 @@ export default function MermaidEditor() {
 
     try {
       const bgColor = theme === 'dark' ? '#020617' : '#ffffff';
-      
+      const scale = 3; // Increase scale for better quality
+
       if (format === 'png') {
-        const dataUrl = await toPng(element, { backgroundColor: bgColor });
+        const dataUrl = await toPng(element, { 
+            backgroundColor: bgColor,
+            pixelRatio: scale,
+        });
         const link = document.createElement('a');
         link.download = 'diagram.png';
         link.href = dataUrl;
@@ -192,7 +196,11 @@ export default function MermaidEditor() {
         link.href = dataUrl;
         link.click();
       } else if (format === 'pdf') {
-        const dataUrl = await toPng(element, { backgroundColor: bgColor });
+        // Use even higher scale for PDF to ensure crisp text
+        const dataUrl = await toPng(element, { 
+            backgroundColor: bgColor,
+            pixelRatio: 4, 
+        });
         const img = new window.Image();
         img.src = dataUrl;
         await new Promise((resolve) => { img.onload = resolve; });
@@ -200,10 +208,10 @@ export default function MermaidEditor() {
         const pdf = new jsPDF({
             orientation: img.width > img.height ? 'landscape' : 'portrait',
             unit: 'px',
-            format: [img.width, img.height]
+            format: [img.width / 4, img.height / 4] // Scale back down for PDF size, but keep high res image
         });
         
-        pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+        pdf.addImage(dataUrl, 'PNG', 0, 0, img.width / 4, img.height / 4);
         pdf.save('diagram.pdf');
       }
     } catch (err) {
@@ -309,14 +317,17 @@ export default function MermaidEditor() {
 
                         {/* Export Controls */}
                         <div className="flex gap-2">
-                            <button onClick={() => handleExport('png')} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Export PNG">
-                                <Image className="w-4 h-4" />
+                            <button onClick={() => handleExport('png')} className="flex items-center gap-1.5 px-2 py-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors text-xs font-medium" title="Export PNG">
+                                <Image className="w-3.5 h-3.5" />
+                                PNG
                             </button>
-                            <button onClick={() => handleExport('svg')} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Export SVG">
-                                <Download className="w-4 h-4" />
+                            <button onClick={() => handleExport('svg')} className="flex items-center gap-1.5 px-2 py-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors text-xs font-medium" title="Export SVG">
+                                <Download className="w-3.5 h-3.5" />
+                                SVG
                             </button>
-                            <button onClick={() => handleExport('pdf')} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Export PDF">
-                                <FileText className="w-4 h-4" />
+                            <button onClick={() => handleExport('pdf')} className="flex items-center gap-1.5 px-2 py-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors text-xs font-medium" title="Export PDF">
+                                <FileText className="w-3.5 h-3.5" />
+                                PDF
                             </button>
                         </div>
                     </div>
