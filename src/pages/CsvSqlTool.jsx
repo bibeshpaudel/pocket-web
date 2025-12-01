@@ -222,11 +222,11 @@ export default function CsvSqlTool() {
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-2 p-2 bg-card border border-border rounded-lg overflow-x-auto flex-shrink-0">
           <div className="flex items-center gap-1 pr-2 border-r border-border">
-            <label className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors cursor-pointer text-sm font-medium">
-              <Upload size={14} />
-              Upload CSV
-              <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
-            </label>
+              <input id="csv-sql-upload" type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
+              <label htmlFor="csv-sql-upload" className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors cursor-pointer text-sm font-medium">
+                <Upload size={14} />
+                Upload CSV
+              </label>
           </div>
 
           <div className="flex items-center gap-1 pr-2 border-r border-border">

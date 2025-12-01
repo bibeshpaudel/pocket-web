@@ -211,19 +211,17 @@ export default function CsvJsonConverter() {
               {mode === 'csv2json' ? 'CSV to JSON' : 'JSON to CSV'}
             </button>
             
-            <div className="relative">
+            <label className={`flex items-center gap-2 px-3 py-1.5 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors text-sm ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+              <Upload size={14} />
+              Upload File
               <input
                 type="file"
                 accept={mode === 'csv2json' ? '.csv' : '.json'}
                 onChange={handleFileUpload}
                 disabled={loading}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                className="hidden"
               />
-              <button disabled={loading} className="flex items-center gap-2 px-3 py-1.5 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors text-sm disabled:opacity-50">
-                <Upload size={14} />
-                Upload File
-              </button>
-            </div>
+            </label>
           </div>
 
           <button

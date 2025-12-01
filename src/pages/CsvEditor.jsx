@@ -98,18 +98,16 @@ export default function CsvEditor() {
         {/* Toolbar */}
         <div className="flex flex-wrap justify-between items-center gap-4 bg-card p-4 rounded-lg border border-border">
           <div className="flex items-center gap-4">
-            <div className="relative">
+            <label className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm cursor-pointer">
+              <Upload size={16} />
+              Open CSV
               <input
                 type="file"
                 accept=".csv"
                 onChange={handleFileUpload}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                className="hidden"
               />
-              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm">
-                <Upload size={16} />
-                Open CSV
-              </button>
-            </div>
+            </label>
             
             {data.length > 0 && (
               <>
