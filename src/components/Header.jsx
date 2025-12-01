@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, Moon, Sun, Search } from 'lucide-react';
 import { Button } from './ui/Button';
+import ToDoWidget from './ToDoWidget';
 
 export default function Header({ onMenuClick, onCommandClick }) {
   const [theme, setTheme] = useState(() => {
@@ -37,6 +38,7 @@ export default function Header({ onMenuClick, onCommandClick }) {
       </div>
 
       <div className="flex items-center gap-4">
+        <ToDoWidget />
         <Button
           variant="outline"
           className="relative h-9 w-9 p-0 xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2 text-muted-foreground"
