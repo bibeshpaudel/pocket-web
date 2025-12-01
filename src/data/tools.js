@@ -271,4 +271,13 @@ export const tools = [
     icon: KeyRound,
     category: 'Security'
   },
+  {
+    id: 'word-to-pdf',
+    name: 'Word to PDF',
+    description: 'Convert Word documents to PDF',
+    path: '/word-to-pdf',
+    icon: FileText,
+    category: 'PDF'
+  },
+
 ];

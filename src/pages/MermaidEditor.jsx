@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import ToolLayout from '../components/ToolLayout';
 import mermaid from 'mermaid';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { Download, ZoomIn, ZoomOut, RotateCcw, Image, FileText, LayoutTemplate, Palette, Share2, Check } from 'lucide-react';
+import { Download, ZoomIn, ZoomOut, RotateCcw, Image, FileText, LayoutTemplate, Palette, Share2, Check, Maximize2, X } from 'lucide-react';
 import { toPng, toSvg } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
@@ -219,11 +219,71 @@ export default function MermaidEditor() {
     }
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // ... (existing code)
+
   return (
     <ToolLayout
       title="Mermaid Diagram Editor"
       description="Create diagrams using code with real-time preview."
     >
+      {/* Expanded View Modal */}
+      {isExpanded && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-8">
+            <div className="bg-card w-full h-full rounded-lg border border-border flex flex-col shadow-2xl overflow-hidden relative">
+                <div className="flex justify-between items-center p-4 border-b border-border bg-muted/30">
+                    <h3 className="font-semibold">Expanded View</h3>
+                    <button 
+                        onClick={() => setIsExpanded(false)}
+                        className="p-2 hover:bg-red-500/10 text-muted-foreground hover:text-red-500 rounded-full transition-colors"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
+                <div className={`flex-grow overflow-hidden relative ${theme === 'dark' ? 'bg-slate-950' : 'bg-white'}`}>
+                    <TransformWrapper
+                        initialScale={1}
+                        minScale={0.5}
+                        maxScale={4}
+                        centerOnInit
+                        limitToBounds={false}
+                    >
+                        {({ zoomIn, zoomOut, resetTransform }) => (
+                            <>
+                                <div className="absolute top-4 right-4 z-10 flex gap-2 bg-card/90 backdrop-blur border border-border p-1.5 rounded-lg shadow-sm">
+                                    <button onClick={() => zoomIn()} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Zoom In">
+                                        <ZoomIn className="w-4 h-4" />
+                                    </button>
+                                    <button onClick={() => zoomOut()} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Zoom Out">
+                                        <ZoomOut className="w-4 h-4" />
+                                    </button>
+                                    <button onClick={() => resetTransform()} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Reset Zoom">
+                                        <RotateCcw className="w-4 h-4" />
+                                    </button>
+                                </div>
+                                <TransformComponent 
+                                    wrapperClass="w-full h-full" 
+                                    contentClass="w-full h-full flex items-center justify-center"
+                                    wrapperStyle={{ width: "100%", height: "100%" }}
+                                >
+                                    <div 
+                                        className="p-8"
+                                        style={{
+                                            backgroundColor: theme === 'dark' ? '#020617' : '#ffffff',
+                                            color: theme === 'dark' ? '#f8fafc' : '#000000',
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: svg }}
+                                    />
+                                </TransformComponent>
+                            </>
+                        )}
+                    </TransformWrapper>
+                </div>
+            </div>
+        </div>
+      )}
+
       <div className="grid lg:grid-cols-2 gap-6 h-[calc(100vh-250px)] min-h-[600px]">
         {/* Editor */}
         <div className="flex flex-col gap-2 h-full">
@@ -313,7 +373,12 @@ export default function MermaidEditor() {
                             <button onClick={() => resetTransform()} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Reset Zoom">
                                 <RotateCcw className="w-4 h-4" />
                             </button>
+                            <button onClick={() => setIsExpanded(true)} className="p-1.5 hover:bg-primary/10 rounded text-muted-foreground hover:text-foreground transition-colors" title="Expand View">
+                                <Maximize2 className="w-4 h-4" />
+                            </button>
                         </div>
+                        {/* ... (existing export controls) ... */}
+
 
                         {/* Export Controls */}
                         <div className="flex gap-2">

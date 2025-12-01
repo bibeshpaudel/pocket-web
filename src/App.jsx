@@ -33,6 +33,8 @@ import CsvJsonConverter from './pages/CsvJsonConverter';
 import CsvEditor from './pages/CsvEditor';
 import CsvSqlTool from './pages/CsvSqlTool';
 import JwtDebugger from './pages/JwtDebugger';
+import WordToPdf from './pages/WordToPdf';
+
 
 
 function App() {
@@ -73,6 +75,8 @@ function App() {
               <Route path="/csv-editor" element={<CsvEditor />} />
               <Route path="/csv-sql" element={<CsvSqlTool />} />
               <Route path="/jwt-debugger" element={<JwtDebugger />} />
+              <Route path="/word-to-pdf" element={<WordToPdf />} />
+
             </Routes>
           </Layout>
         </Router>
