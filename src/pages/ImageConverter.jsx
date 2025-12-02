@@ -92,13 +92,19 @@ export default function ImageConverter() {
                     <div className="mt-4 pt-4 border-t border-border">
                       <p className="font-bold mb-2">Preview:</p>
                       <img src={convertedImage} alt="Converted" className="w-full h-auto rounded-sm mb-4" />
-                      <Button asChild variant="secondary" className="w-full">
-                        <a
-                          href={convertedImage}
-                          download={`converted-image.${format.split('/')[1]}`}
-                        >
-                          <Download className="mr-2 h-4 w-4" /> Download
-                        </a>
+                      <Button 
+                        variant="secondary" 
+                        className="w-full"
+                        onClick={() => {
+                          const link = document.createElement('a');
+                          link.href = convertedImage;
+                          link.download = `converted-image.${format.split('/')[1]}`;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        }}
+                      >
+                        <Download className="mr-2 h-4 w-4" /> Download
                       </Button>
                     </div>
                   )}
