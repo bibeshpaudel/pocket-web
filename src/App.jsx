@@ -34,9 +34,7 @@ import CsvEditor from './pages/CsvEditor';
 import CsvSqlTool from './pages/CsvSqlTool';
 import JwtDebugger from './pages/JwtDebugger';
 import WordToPdf from './pages/WordToPdf';
-
-
-
+import OnlineCompiler from './pages/OnlineCompiler';
 
 function App() {
   return (
@@ -48,6 +46,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/json-formatter" element={<JsonFormatter />} />
               <Route path="/xml-formatter" element={<XmlFormatter />} />
+              <Route path="/compiler" element={<OnlineCompiler />} />
               <Route path="/qr-generator" element={<QrGenerator />} />
               <Route path="/image-compressor" element={<ImageCompressor />} />
               <Route path="/password-generator" element={<PasswordGenerator />} />

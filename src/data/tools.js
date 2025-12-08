@@ -46,6 +46,14 @@ export const tools = [
     icon: FileCode,
     category: 'Formatters'
   },
+  {
+    id: 'online-compiler',
+    name: 'Online Compiler',
+    description: 'Compile and run code (Python, JS, C++, etc.)',
+    path: '/compiler',
+    icon: Code,
+    category: 'Development'
+  },
 
   {
     id: 'qr-generator',
