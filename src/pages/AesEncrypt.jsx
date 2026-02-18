@@ -10,27 +10,17 @@ export default function AesEncrypt() {
   const [input, setInput] = useState('');
   const [password, setPassword] = useState('');
   const [output, setOutput] = useState('');
-  const [mode, setMode] = useState('encrypt'); // encrypt | decrypt
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
-  const handleProcess = () => {
+  const handleEncrypt = () => {
     try {
       if (!input || !password) {
         setError('Please provide both input text and a password.');
         setOutput('');
         return;
       }
-
-      let result = '';
-      if (mode === 'encrypt') {
-        result = CryptoJS.AES.encrypt(input, password).toString();
-      } else {
-        const bytes = CryptoJS.AES.decrypt(input, password);
-        result = bytes.toString(CryptoJS.enc.Utf8);
-        if (!result) throw new Error('Invalid password or corrupted data');
-      }
-
+      const result = CryptoJS.AES.encrypt(input, password).toString();
       setOutput(result);
       setError('');
     } catch (err) {
@@ -39,11 +29,23 @@ export default function AesEncrypt() {
     }
   };
 
-  const toggleMode = () => {
-    setMode(mode === 'encrypt' ? 'decrypt' : 'encrypt');
-    setInput(output);
-    setOutput(input);
-    setError('');
+  const handleDecrypt = () => {
+    try {
+      if (!input || !password) {
+        setError('Please provide both input text and a password.');
+        setOutput('');
+        return;
+      }
+      const bytes = CryptoJS.AES.decrypt(input, password);
+      const result = bytes.toString(CryptoJS.enc.Utf8);
+      if (!result) throw new Error('Invalid password or corrupted data');
+
+      setOutput(result);
+      setError('');
+    } catch (err) {
+      setError('Error: ' + err.message);
+      setOutput('');
+    }
   };
 
   const copyToClipboard = () => {
@@ -60,20 +62,13 @@ export default function AesEncrypt() {
       description="Securely encrypt and decrypt text using AES encryption."
     >
       <div className="grid gap-6">
-        <div className="flex justify-center">
-          <Button onClick={toggleMode} variant="outline">
-            {mode === 'encrypt' ? <Lock className="mr-2 h-4 w-4" /> : <Unlock className="mr-2 h-4 w-4" />}
-            Switch to {mode === 'encrypt' ? 'Decrypt' : 'Encrypt'}
-          </Button>
-        </div>
-
         <div className="space-y-2">
-          <label className="text-sm font-medium leading-none">{mode === 'encrypt' ? 'Text' : 'Encrypted'} Input</label>
+          <label className="text-sm font-medium leading-none">Input</label>
           <Textarea
             className="h-32 resize-y font-mono text-sm"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={mode === 'encrypt' ? 'Type text to encrypt...' : 'Paste encrypted text...'}
+            placeholder="Type text to encrypt or paste encrypted text..."
           />
         </div>
 
@@ -89,8 +84,11 @@ export default function AesEncrypt() {
         </div>
 
         <div className="flex gap-4">
-          <Button onClick={handleProcess}>
-            {mode === 'encrypt' ? 'Encrypt' : 'Decrypt'}
+          <Button onClick={handleEncrypt}>
+            Encrypt
+          </Button>
+          <Button onClick={handleDecrypt}>
+            Decrypt
           </Button>
           <Button
             variant="destructive"
@@ -108,7 +106,7 @@ export default function AesEncrypt() {
 
         <div className="space-y-2">
           <div className="flex justify-between items-center mb-2">
-            <label className="text-sm font-medium leading-none">{mode === 'encrypt' ? 'Encrypted' : 'Decrypted'} Output</label>
+            <label className="text-sm font-medium leading-none">Output</label>
             <Button
               variant="ghost"
               size="sm"

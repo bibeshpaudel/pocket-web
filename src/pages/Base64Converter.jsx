@@ -7,29 +7,30 @@ import { Textarea } from '../components/ui/Textarea';
 export default function Base64Converter() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [mode, setMode] = useState('encode'); // encode | decode
   const [copied, setCopied] = useState(false);
 
-  const handleConvert = () => {
+  const handleEncode = () => {
     try {
       if (!input) {
         setOutput('');
         return;
       }
-      if (mode === 'encode') {
-        setOutput(btoa(input));
-      } else {
-        setOutput(atob(input));
-      }
+      setOutput(btoa(input));
     } catch (err) {
-      setOutput('Error: Invalid input for decoding');
+      setOutput('Error: Invalid input for encoding');
     }
   };
 
-  const toggleMode = () => {
-    setMode(mode === 'encode' ? 'decode' : 'encode');
-    setInput(output);
-    setOutput(input);
+  const handleDecode = () => {
+    try {
+      if (!input) {
+        setOutput('');
+        return;
+      }
+      setOutput(atob(input));
+    } catch (err) {
+      setOutput('Error: Invalid input for decoding');
+    }
   };
 
   const copyToClipboard = () => {
@@ -46,26 +47,22 @@ export default function Base64Converter() {
       description="Encode and decode Base64 strings."
     >
       <div className="grid gap-6">
-        <div className="flex justify-center">
-          <Button onClick={toggleMode} variant="outline">
-            <ArrowDownUp className="mr-2 h-4 w-4" />
-            Switch to {mode === 'encode' ? 'Decode' : 'Encode'}
-          </Button>
-        </div>
-
         <div className="space-y-2">
-          <label className="text-sm font-medium leading-none">{mode === 'encode' ? 'Text' : 'Base64'} Input</label>
+          <label className="text-sm font-medium leading-none">Input</label>
           <Textarea
             className="h-32 resize-y font-mono text-sm"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={mode === 'encode' ? 'Type text to encode...' : 'Paste Base64 to decode...'}
+            placeholder="Type text to encode or paste Base64 to decode..."
           />
         </div>
 
         <div className="flex gap-4">
-          <Button onClick={handleConvert}>
-            {mode === 'encode' ? 'Encode' : 'Decode'}
+          <Button onClick={handleEncode}>
+            Encode
+          </Button>
+          <Button onClick={handleDecode}>
+            Decode
           </Button>
           <Button
             variant="destructive"
@@ -77,7 +74,7 @@ export default function Base64Converter() {
 
         <div className="space-y-2">
           <div className="flex justify-between items-center mb-2">
-            <label className="text-sm font-medium leading-none">{mode === 'encode' ? 'Base64' : 'Text'} Output</label>
+            <label className="text-sm font-medium leading-none">Output</label>
             <Button
               variant="ghost"
               size="sm"
