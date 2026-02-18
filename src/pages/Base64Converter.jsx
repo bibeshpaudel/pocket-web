@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
-import { ArrowDownUp, Copy, Trash2, Check } from 'lucide-react';
+import { ArrowDownUp, Copy, Trash2, Check, FileBracesCorner, File } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Textarea } from '../components/ui/Textarea';
 
@@ -59,10 +59,10 @@ export default function Base64Converter() {
 
         <div className="flex gap-4">
           <Button onClick={handleEncode}>
-            Encode
+            <FileBracesCorner className="mr-2 h-4 w-4" />Encode
           </Button>
           <Button onClick={handleDecode}>
-            Decode
+            <File  className="mr-2 h-4 w-4"/>Decode
           </Button>
           <Button
             variant="destructive"

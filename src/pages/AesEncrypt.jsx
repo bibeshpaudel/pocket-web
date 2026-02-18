@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ToolLayout from '../components/ToolLayout';
 import CryptoJS from 'crypto-js';
-import { Lock, Unlock, Copy, Trash2, Check } from 'lucide-react';
+import { Lock, Unlock, Copy, Trash2, Check, Shield, ShieldX } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
@@ -85,10 +85,10 @@ export default function AesEncrypt() {
 
         <div className="flex gap-4">
           <Button onClick={handleEncrypt}>
-            Encrypt
+            <Shield className="mr-2 h-4 w-4" />Encrypt
           </Button>
           <Button onClick={handleDecrypt}>
-            Decrypt
+            <ShieldX className="mr-2 h-4 w-4" />Decrypt
           </Button>
           <Button
             variant="destructive"
