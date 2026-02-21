@@ -5,6 +5,7 @@ import { Button } from '../components/ui/Button';
 import { Textarea } from '../components/ui/Textarea';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ExpandableOutput from '../components/ExpandableOutput';
 
 export default function XmlFormatter() {
   const [input, setInput] = useState('');
@@ -153,14 +154,16 @@ export default function XmlFormatter() {
                 {error}
               </div>
             ) : output ? (
-              <SyntaxHighlighter
-                language="xml"
-                style={theme === 'dark' ? vscDarkPlus : vs}
-                customStyle={{ margin: 0, height: '100%', borderRadius: 0, fontSize: '14px', backgroundColor: 'transparent' }}
-                showLineNumbers={true}
-              >
-                {output}
-              </SyntaxHighlighter>
+              <ExpandableOutput value={output} title="Formatted XML Output">
+                <SyntaxHighlighter
+                  language="xml"
+                  style={theme === 'dark' ? vscDarkPlus : vs}
+                  customStyle={{ margin: 0, height: '100%', borderRadius: 0, fontSize: '14px', backgroundColor: 'transparent' }}
+                  showLineNumbers={true}
+                >
+                  {output}
+                </SyntaxHighlighter>
+              </ExpandableOutput>
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
                 Formatted XML will appear here

@@ -58,21 +58,24 @@ export default function LoremIpsum() {
           </CardContent>
         </Card>
 
-        <div className="relative group">
+        <div className="space-y-2">
+          <div className="flex justify-between items-center mb-2">
+            <label className="text-sm font-medium leading-none">Output</label>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={copyToClipboard}
+              className="h-8"
+            >
+              {copied ? <Check className="mr-2 h-3.5 w-3.5" /> : <Copy className="mr-2 h-3.5 w-3.5" />}
+              {copied ? 'Copied!' : 'Copy'}
+            </Button>
+          </div>
           <Textarea
             readOnly
             value={text}
             className="h-96 p-6 font-serif text-lg leading-relaxed resize-y"
           />
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={copyToClipboard}
-            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-            {copied ? 'Copied!' : 'Copy'}
-          </Button>
         </div>
       </div>
     </ToolLayout>

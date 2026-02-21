@@ -6,6 +6,7 @@ import { Textarea } from '../components/ui/Textarea';
 import { Card, CardContent } from '../components/ui/Card';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ExpandableOutput from '../components/ExpandableOutput';
 
 export default function JsonFormatter() {
   const [input, setInput] = useState('');
@@ -116,14 +117,16 @@ export default function JsonFormatter() {
                 {error}
               </div>
             ) : output ? (
-              <SyntaxHighlighter
-                language="json"
-                style={theme === 'dark' ? vscDarkPlus : vs}
-                customStyle={{ margin: 0, height: '100%', borderRadius: 0, fontSize: '14px', backgroundColor: 'transparent' }}
-                showLineNumbers={true}
-              >
-                {output}
-              </SyntaxHighlighter>
+              <ExpandableOutput value={output} title="Formatted JSON Output">
+                <SyntaxHighlighter
+                  language="json"
+                  style={theme === 'dark' ? vscDarkPlus : vs}
+                  customStyle={{ margin: 0, height: '100%', borderRadius: 0, fontSize: '14px', backgroundColor: 'transparent' }}
+                  showLineNumbers={true}
+                >
+                  {output}
+                </SyntaxHighlighter>
+              </ExpandableOutput>
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
                 Formatted JSON will appear here

@@ -3,6 +3,7 @@ import ToolLayout from '../components/ToolLayout';
 import ReactMarkdown from 'react-markdown';
 import { Textarea } from '../components/ui/Textarea';
 import { Card, CardContent } from '../components/ui/Card';
+import ExpandableOutput from '../components/ExpandableOutput';
 
 export default function MarkdownPreview() {
   const [markdown, setMarkdown] = useState('# Hello World\n\nStart typing markdown...');
@@ -23,11 +24,13 @@ export default function MarkdownPreview() {
         </div>
         <div className="flex flex-col space-y-2">
           <label className="text-sm font-medium leading-none">Preview</label>
-          <Card className="flex-grow overflow-hidden">
-            <CardContent className="h-full overflow-auto p-6 prose prose-invert max-w-none">
-              <ReactMarkdown>{markdown}</ReactMarkdown>
-            </CardContent>
-          </Card>
+          <ExpandableOutput title="Markdown Preview">
+            <Card className="flex-grow overflow-hidden h-full">
+              <CardContent className="h-full overflow-auto p-6 prose prose-invert max-w-none">
+                <ReactMarkdown>{markdown}</ReactMarkdown>
+              </CardContent>
+            </Card>
+          </ExpandableOutput>
         </div>
       </div>
     </ToolLayout>

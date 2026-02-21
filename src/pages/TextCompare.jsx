@@ -4,6 +4,7 @@ import { diffChars, diffWords, diffLines } from 'diff';
 import { Button } from '../components/ui/Button';
 import { Textarea } from '../components/ui/Textarea';
 import { Card, CardContent } from '../components/ui/Card';
+import ExpandableOutput from '../components/ExpandableOutput';
 
 export default function TextCompare() {
   const [text1, setText1] = useState('');
@@ -71,18 +72,20 @@ export default function TextCompare() {
         {diffResult.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium leading-none">Comparison Result</label>
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 font-mono text-sm whitespace-pre-wrap break-words">
-                {diffResult.map((part, index) => {
-                  const color = part.added ? 'bg-green-500/20 text-green-600 dark:text-green-400' : part.removed ? 'bg-red-500/20 text-red-600 dark:text-red-400' : 'bg-transparent';
-                  return (
-                    <span key={index} className={color}>
-                      {part.value}
-                    </span>
-                  );
-                })}
-              </CardContent>
-            </Card>
+            <ExpandableOutput title="Comparison Result">
+              <Card className="bg-muted/50 h-full overflow-auto">
+                <CardContent className="p-4 font-mono text-sm whitespace-pre-wrap break-words">
+                  {diffResult.map((part, index) => {
+                    const color = part.added ? 'bg-green-500/20 text-green-600 dark:text-green-400' : part.removed ? 'bg-red-500/20 text-red-600 dark:text-red-400' : 'bg-transparent';
+                    return (
+                      <span key={index} className={color}>
+                        {part.value}
+                      </span>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            </ExpandableOutput>
           </div>
         )}
       </div>

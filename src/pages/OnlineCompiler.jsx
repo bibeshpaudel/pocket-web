@@ -245,14 +245,22 @@ export default function OnlineCompiler() {
         </div>
 
         {/* Editor & Output Split */}
-        <div className="flex flex-col lg:flex-row gap-4 flex-grow min-h-0 overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 flex-grow min-h-0 overflow-hidden relative">
           
+          {/* Backdrop for expanded panel */}
+          {expandedPanel && (
+            <div 
+              className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-sm animate-in fade-in duration-200" 
+              onClick={() => setExpandedPanel(null)}
+            />
+          )}
+
           {/* Editor Panel */}
-          <div className={`
-            flex flex-col border border-border rounded-md overflow-hidden bg-[#1e1e1e] relative transition-all duration-500 ease-in-out
-            ${expandedPanel === 'editor' ? 'lg:w-full lg:flex-grow' : expandedPanel === 'output' ? 'lg:w-0 lg:flex-grow-0 lg:opacity-0 lg:pointer-events-none lg:overflow-hidden' : 'lg:w-[50%] lg:flex-grow'}
-            ${expandedPanel === 'output' && 'h-0 lg:h-auto opacity-0 lg:opacity-0'} 
-          `}>
+          <div className={
+            expandedPanel === 'editor'
+              ? 'fixed inset-4 sm:inset-8 z-[70] flex flex-col border border-border rounded-lg bg-[#1e1e1e] shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200'
+              : 'relative flex flex-col border border-border rounded-md overflow-hidden bg-[#1e1e1e] lg:w-[50%] flex-grow'
+          }>
              <div className="absolute top-2 right-4 z-10 transition-opacity duration-300">
                 <button 
                     onClick={() => toggleExpand('editor')}
@@ -278,12 +286,11 @@ export default function OnlineCompiler() {
           </div>
 
           {/* Output Panel */}
-          <div className={`
-            flex flex-col border border-border rounded-md overflow-hidden relative transition-all duration-500 ease-in-out
-            bg-card text-card-foreground
-            ${expandedPanel === 'output' ? 'lg:w-full lg:flex-grow' : expandedPanel === 'editor' ? 'lg:w-0 lg:flex-grow-0 lg:opacity-0 lg:pointer-events-none lg:overflow-hidden' : 'lg:w-[50%] lg:flex-grow'}
-            ${expandedPanel === 'editor' && 'h-0 lg:h-auto opacity-0 lg:opacity-0'}
-          `}>
+          <div className={
+            expandedPanel === 'output'
+              ? 'fixed inset-4 sm:inset-8 z-[70] flex flex-col border border-border rounded-lg bg-card shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 text-card-foreground'
+              : 'relative flex flex-col border border-border rounded-md overflow-hidden bg-card text-card-foreground lg:w-[50%] flex-grow'
+          }>
              <div className="absolute top-2 right-4 z-10 transition-opacity duration-300">
                 <button 
                     onClick={() => toggleExpand('output')}
