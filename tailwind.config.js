@@ -72,10 +72,42 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            "code::before": { content: '""' },
+            "code::after": { content: '""' },
+            code: {
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              padding: "0.2em 0.4em",
+              borderRadius: "0.25rem",
+              fontWeight: "400",
+            },
+            "pre code": {
+              backgroundColor: "transparent",
+              padding: "0",
+            },
+            pre: {
+              backgroundColor: "#1e1e1e",
+              padding: "1rem",
+              borderRadius: "0.5rem",
+              overflowX: "auto",
+            },
+            ".katex-display": {
+              overflowX: "auto",
+              overflowY: "hidden",
+            },
+            ".katex": {
+              fontSize: "1.1em",
+            },
+          },
+        },
+      },
     },
   },
   plugins: [
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
+    require("@tailwindcss/typography"),
   ],
 }
