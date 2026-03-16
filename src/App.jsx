@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
+import ToolTracker from './components/ToolTracker';
 import Home from './pages/Home';
 import JsonFormatter from './pages/JsonFormatter';
 import XmlFormatter from './pages/XmlFormatter';
@@ -35,12 +36,15 @@ import CsvSqlTool from './pages/CsvSqlTool';
 import JwtDebugger from './pages/JwtDebugger';
 import WordToPdf from './pages/WordToPdf';
 import OnlineCompiler from './pages/OnlineCompiler';
+import CssGenerators from './pages/CssGenerators';
+import GitCheatsheet from './pages/GitCheatsheet';
 
 function App() {
   return (
       <HelmetProvider>
         <Router basename={import.meta.env.BASE_URL}>
           <ScrollToTop />
+          <ToolTracker />
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -76,8 +80,8 @@ function App() {
               <Route path="/csv-sql" element={<CsvSqlTool />} />
               <Route path="/jwt-debugger" element={<JwtDebugger />} />
               <Route path="/word-to-pdf" element={<WordToPdf />} />
-
-
+              <Route path="/css-generators" element={<CssGenerators />} />
+              <Route path="/git-cheatsheet" element={<GitCheatsheet />} />
             </Routes>
           </Layout>
         </Router>

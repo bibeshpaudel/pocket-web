@@ -26,7 +26,9 @@ import {
   Merge,
   FileSpreadsheet,
   KeyRound,
-  Database
+  Database,
+  Palette,
+  GitBranch
 } from 'lucide-react';
 
 export const tools = [
@@ -288,4 +290,20 @@ export const tools = [
     category: 'PDF'
   },
 
+  {
+    id: 'css-generators',
+    name: 'CSS Generators',
+    description: 'Generate CSS for Box Shadows and Gradients',
+    path: '/css-generators',
+    icon: Palette,
+    category: 'Web'
+  },
+  {
+    id: 'git-cheatsheet',
+    name: 'Git Cheatsheet',
+    description: 'Interactive Git command builder and reference',
+    path: '/git-cheatsheet',
+    icon: GitBranch,
+    category: 'Development'
+  }
 ];
