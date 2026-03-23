@@ -30,7 +30,24 @@ export default defineConfig({
         ]
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 15000000
+        maximumFileSizeToCacheInBytes: 15000000,
+        navigateFallback: null,
+        globIgnores: ["**/*.html"],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages-cache',
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          }
+        ]
       }
     })
   ],
