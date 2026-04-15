@@ -38,6 +38,7 @@ import WordToPdf from './pages/WordToPdf';
 import OnlineCompiler from './pages/OnlineCompiler';
 import CssGenerators from './pages/CssGenerators';
 import GitCheatsheet from './pages/GitCheatsheet';
+import ImageAnalyzer from './pages/ImageAnalyzer';
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
               <Route path="/word-to-pdf" element={<WordToPdf />} />
               <Route path="/css-generators" element={<CssGenerators />} />
               <Route path="/git-cheatsheet" element={<GitCheatsheet />} />
+              <Route path="/image-analyzer" element={<ImageAnalyzer />} />
             </Routes>
           </Layout>
         </Router>

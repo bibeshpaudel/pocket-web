@@ -28,7 +28,8 @@ import {
   KeyRound,
   Database,
   Palette,
-  GitBranch
+  GitBranch,
+  Camera
 } from 'lucide-react';
 
 export const tools = [
@@ -305,5 +306,13 @@ export const tools = [
     path: '/git-cheatsheet',
     icon: GitBranch,
     category: 'Development'
+  },
+  {
+    id: 'image-analyzer',
+    name: 'Image Analyzer',
+    description: 'Advanced client-side image forensics and metadata extraction',
+    path: '/image-analyzer',
+    icon: Camera,
+    category: 'Images'
   }
 ];

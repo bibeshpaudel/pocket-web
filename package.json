@@ -21,6 +21,7 @@
     "crypto-js": "^4.2.0",
     "diff": "^8.0.2",
     "docx": "^9.5.1",
+    "exifreader": "^4.38.1",
     "framer-motion": "^12.23.25",
     "highlight.js": "^11.11.1",
     "html-to-image": "^1.11.13",
