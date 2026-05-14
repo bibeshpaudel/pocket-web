@@ -95,22 +95,42 @@ export default function OnlineCompiler() {
     setIframeSrc('');
   };
 
-  const runPiston = async (lang, sourceCode) => {
+  const JUDGE0_LANG_MAP = {
+    csharp: 51,
+    cpp: 105,
+    java: 91,
+    go: 107,
+    rust: 108,
+    typescript: 101,
+    php: 98,
+    ruby: 72,
+    swift: 83,
+    kotlin: 111
+  };
+
+  const runJudge0 = async (langId, sourceCode) => {
     try {
-      const response = await fetch('https://emkc.org/api/v2/piston/execute', {
+      const judge0Id = JUDGE0_LANG_MAP[langId];
+      if (!judge0Id) return `Error: Language ${langId} is not supported by the execution engine.`;
+
+      const response = await fetch('https://ce.judge0.com/submissions?base64_encoded=false&wait=true', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          language: lang,
-          version: '*',
-          files: [{ content: sourceCode }]
+          language_id: judge0Id,
+          source_code: sourceCode
         })
       });
       const data = await response.json();
-      if (data.run) {
-        return data.run.output;
+      
+      if (data.stderr || data.compile_output) {
+        return (data.compile_output || '') + '\n' + (data.stderr || '');
+      } else if (data.stdout !== null) {
+        return data.stdout;
+      } else if (data.message) {
+        return `Error: ${data.message}`;
       } else {
-        return `Error: ${data.message || 'Unknown error'}`;
+        return `Execution finished with status: ${data.status?.description || 'Unknown'}`;
       }
     } catch (e) {
       return `Network Error: ${e.message}`;
@@ -181,8 +201,8 @@ export default function OnlineCompiler() {
             setOutput(logs.join('\n'));
         }
       } else {
-        // Use Piston for others
-        const result = await runPiston(language.id, code);
+        // Use Judge0 for others
+        const result = await runJudge0(language.id, code);
         setOutput(result);
       }
     } catch (err) {

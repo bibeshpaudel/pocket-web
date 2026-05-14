@@ -18,10 +18,21 @@ export default function IpLookup() {
 
   const fetchMyIp = async () => {
     try {
-      const res = await fetch('https://ipwho.is/');
+      const res = await fetch('https://json.geoiplookup.io/');
       const json = await res.json();
-      if (json.success) {
-        setMyIp(json);
+      if (json && json.ip) {
+        setMyIp({
+          ip: json.ip,
+          city: json.city,
+          country: json.country_name,
+          connection: {
+            isp: json.isp,
+            org: json.org || json.asn_org
+          },
+          timezone: {
+            id: json.timezone_name
+          }
+        });
       }
     } catch (err) {
       console.error('Failed to fetch my IP');
@@ -55,12 +66,31 @@ export default function IpLookup() {
         targetIp = aRecord.data;
       }
 
-      const res = await fetch(`https://ipwho.is/${targetIp}`);
+      const res = await fetch(`https://json.geoiplookup.io/${targetIp}`);
       const json = await res.json();
-      if (!json.success) {
-        throw new Error(json.message || 'Invalid IP/Domain');
+      if (!json || !json.ip) {
+        throw new Error('Invalid IP/Domain or not found');
       }
-      setData(json);
+      
+      setData({
+        ip: json.ip,
+        connection: {
+          isp: json.isp,
+          org: json.org || json.asn_org,
+          asn: json.asn_number
+        },
+        type: json.ip.includes(':') ? 'IPv6' : 'IPv4',
+        city: json.city,
+        region: json.region,
+        country: json.country_name,
+        postal: json.postal_code,
+        latitude: json.latitude,
+        longitude: json.longitude,
+        timezone: {
+          id: json.timezone_name
+        },
+        calling_code: json.currency_code // Using currency code as fallback since calling code is missing
+      });
     } catch (err) {
       setError(err.message);
     } finally {
